@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import babel from 'rollup-plugin-babel';
 import json from '@rollup/plugin-json';
+import css from 'rollup-plugin-css-only';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -49,6 +50,7 @@ export default [
 					css.write('bundle.css');
 				}
 			}),
+			css({ output: 'bundle.css' }),
 			resolve({
 				browser: true,
 				dedupe: ['svelte']
@@ -87,6 +89,7 @@ export default [
 				//output in legacy mode ES5 compatible) to support IE11
 				legacy: true
 			}),
+			css({ output: 'bundle.css' }),
 			resolve({
 				browser: true,
 				dedupe: ['svelte']

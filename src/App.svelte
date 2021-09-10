@@ -1,4 +1,5 @@
 <script>
+	import "./custom.css";
 	let name = 'world';
 </script>
 
