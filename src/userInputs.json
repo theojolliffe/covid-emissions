@@ -1,0 +1,42 @@
+{"results": [
+    {
+        "question": "How do you commute?",
+        "answers": [
+            {"id": "5a", "text": "Walk", "selected": ""},
+            {"id": "5a", "text": "Cycle", "selected": ""},
+            {"id": "5b", "text": "Bus", "selected": ""},
+            {"id": "5b", "text": "Train", "selected": ""},
+            {"id": "5b", "text": "London Underground", "selected": ""},
+            {"id": "5c", "text": "Motorbike", "selected": ""},
+            {"id": "5d", "text": "Car", "selected": "selected"}
+        ],
+        "answerChoice": "Car"
+    },
+    {
+        "question": "What kind of car do you drive?",
+        "answers": [
+            {"id": "5a", "text": "City car", "selected": ""},
+            {"id": "5a", "text": "Supermini", "selected": ""},
+            {"id": "5b", "text": "Small family car", "selected": ""},
+            {"id": "5b", "text": "Large family car", "selected": ""},
+            {"id": "5b", "text": "Executive", "selected": ""},
+            {"id": "5c", "text": "Luxury", "selected": ""},
+            {"id": "5d", "text": "Sports car", "selected": ""},
+            {"id": "5d", "text": "4x4/SUV", "selected": "selected"},
+            {"id": "5d", "text": "Multi-Purpose Vehicle", "selected": ""},
+            {"id": "5d", "text": "Not sure", "selected": ""}
+        ],
+        "answerChoice": "4x4/SUV"
+    },
+    {
+        "question": "What's the fuel type?",
+        "answers": [
+            {"id": "5a", "text": "Petrol", "selected": "selected"},
+            {"id": "5a", "text": "Diesel", "selected": ""},
+            {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+            {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+            {"id": "5b", "text": "Not sure", "selected": ""}
+        ],
+        "answerChoice": "Petrol"
+    }
+]}

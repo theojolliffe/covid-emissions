@@ -1,0 +1,79 @@
+{   "Walk": 0, 
+    "Cycle": 0, 
+    "Bus": 0.103, 
+    "Train": 0.036, 
+    "London Underground": 0.028, 
+    "Motorbike": 0.101, 
+    "Car": {
+        "City car": {
+            "Petrol": 0.13525,
+            "Diesel": 0.10837,
+            "Plug-in Hybrid": 0.02235,
+            "Electric Vehicle": 0,
+            "Not sure":   0.13513  
+        },
+        "Supermini": {
+            "Petrol": 0.15017,
+            "Diesel": 0.1308,
+            "Plug-in Hybrid" : 0.02235,
+            "Electric Vehicle" : 0,
+            "Not sure": 0.14778
+        },
+        "Small family car": {
+            "Petrol": 0.17343,
+            "Diesel": 0.14197,
+            "Plug-in Hybrid": 0.06588,
+            "Electric Vehicle": 0,
+            "Not sure": 0.15819
+        },
+        "Large family car": {
+            "Petrol": 0.20161,
+            "Diesel": 0.16098,
+            "Plug-in Hybrid": 0.07309,
+            "Electric Vehicle": 0,
+            "Not sure": 0.17052
+        },
+        "Executive": {
+            "Petrol": 0.22699,
+            "Diesel": 0.16735,
+            "Plug-in Hybrid": 0.0738,
+            "Electric Vehicle" : 0,
+            "Not sure": 0.1803
+        },
+        "Luxury": {
+            "Petrol": 0.32797,
+            "Diesel": 0.20198,
+            "Plug-in Hybrid": 0.09285,
+            "Electric Vehicle": 0,
+            "Not sure": 0.25454 
+        },
+        "Sports car": {
+            "Petrol": 0.24096,
+            "Diesel": 0.16996,
+            "Plug-in Hybrid": 0.0773,
+            "Electric Vehicle": 0,
+            "Not sure": 0.23029 
+        },
+        "4x4/SUV": {
+            "Petrol": 0.21844 ,
+            "Diesel": 0.19141,
+            "Plug-in Hybrid": 0.07503,
+            "Electric Vehicle" : 0,
+            "Not sure": 0.19784
+        },
+        "Multi-Purpose Vehicle": {
+            "Petrol": 0.19351,
+            "Diesel": 0.17627,
+            "Plug-in Hybrid": 0.07503,
+            "Electric Vehicle" : 0,
+            "Not sure": 0.18086
+        },
+        "Not sure": {
+            "Petrol" : 0.1743,
+            "Diesel" : 0.16844,
+            "Plug-in Hybrid" : 0.06995,
+            "Electric Vehicle" : 0,
+            "Not sure": 0.17140
+        }
+    }
+}
