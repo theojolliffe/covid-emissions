@@ -30,13 +30,87 @@
     },
     {
         "question": "What's the fuel type?",
-        "answers": [
-            {"id": "5a", "text": "Petrol", "selected": "selected"},
-            {"id": "5a", "text": "Diesel", "selected": ""},
-            {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
-            {"id": "5b", "text": "Electric Vehicle", "selected": ""},
-            {"id": "5b", "text": "Not sure", "selected": ""}
-        ],
+        "answers": {
+            "City car": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "Multi-Purpose Vehicle": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "Executive": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "4x4/SUV": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "Supermini": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "Small family car": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "Large family car": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "Luxury": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "Sports car": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ],
+            "Not sure": [
+                {"id": "5a", "text": "Petrol", "selected": "selected"},
+                {"id": "5a", "text": "Diesel", "selected": ""},
+                {"id": "5b", "text": "Plug-in Hybrid", "selected": ""},
+                {"id": "5b", "text": "Electric Vehicle", "selected": ""},
+                {"id": "5b", "text": "Not sure", "selected": ""}
+            ]
+        },
         "answerChoice": "Petrol"
+    },
+    {
+        "question": "How would you describe your diet?",
+        "answers": [
+            {"id": "5d", "text": "High meat eater", "selected": ""},
+            {"id": "5d", "text": "Medium meat eater", "selected": "selected"},
+            {"id": "5d", "text": "Low meat eater", "selected": ""},
+            {"id": "5d", "text": "Pescatarian", "selected": ""},
+            {"id": "5d", "text": "Vegetarian", "selected": ""},
+            {"id": "5d", "text": "Vegan", "selected": ""}
+        ],
+        "answerChoice": "Medium meat eater"
     }
 ]}
