@@ -58,20 +58,10 @@
 	$:vehcLU = vehicleLU["Car"][input[1].answerChoice][input[2].answerChoice];
 	$:vehConsump = (input[0].answerChoice=="Car")? vehcLU : vehicleLU[input[0].answerChoice];
 	$:yearSaving = (46*wfhDays*(vehConsump*comLength))/(share+1)
-	$:walkEm = dietLU[input[3].answerChoice]*(46*wfhDays*km*70)/2000
-	$:totCommEm = (input[0].answerChoice=="Walk")? walkEm:Math.round(yearSaving*10)/10;
+	$:walkEm = dietLU[input[3].answerChoice]*(46*wfhDays*km*47)/2000
+	$:cycleEm = dietLU[input[3].answerChoice]*(46*wfhDays*km*28)/2000
+	$:totCommEm = (input[0].answerChoice=="Walk")? walkEm:(input[0].answerChoice=="Cycle")? cycleEm: Math.round(yearSaving*10)/10;
 
-	function totYearComm() {
-		if (input[0].answerChoice=="Walk") {
-			console.log("cec")
-			totCommEm = dietLU[input[3].answerChoice]*(46*wfhDays*km*70)/2000
-		} else if (input[0].answerChoice=="Cycle") {
-			totCommEm = 4.965*(4*wfhDays*comLength*70)/1000
-		} else {
-			totCommEm = (46*wfhDays*(vehConsump*comLength))/(share+1)
-		}
-		totCommEm = Math.round(totCommEm*10)/10
-	}
 	function plural(share) { return share==1?"":"s";}
 	function addMethod() { commMethod = !commMethod }
 	function addUsage() { usage = !usage }
@@ -158,11 +148,17 @@
 							<div aria-live="assertive">
 							{#if input[0].answerChoice=="Walk"}
 								<p style="display: inline-block;">
-									The average daily round commute is <strong>1.8 miles</strong> (2.9 km) for those who walk to work, according to the National Travel Survey.</p><p>Walking to work emits no greenhouse gas, although GHG is emitted during the production of the food that provides the required calories.
+									The average daily round commute is <strong>1.8 miles</strong> (2.9 km) for those who walk to work, according to the National Travel Survey.</p><p>Walking to work emits no greenhouse gas, although GHG is emitted producing the food needed for the calories to walk.
+								</p>
+								<p>
+									For some, working from home will not result in the consumption of less calories and will therefore not represent a reduction in dietary emissions.
 								</p>
 							{:else if input[0].answerChoice=="Cycle"}
 								<p style="display: inline-block;">
 								The average daily round commute is <strong>6.8 miles</strong> (10.9 km) for those who cycle to work, according to the National Travel Survey.</p><p>Cycling to work emits no greenhouse gas, although bike manufacturing produces some greenhouse gas, as does producing the food needed for energy to cycle.
+								</p>
+								<p>
+									For some, working from home will not result in the consumption of less calories and will therefore not represent a reduction in dietary emissions.
 								</p>
 							{:else if input[0].answerChoice=="Bus"}
 								<p style="display: inline-block;">
@@ -189,26 +185,32 @@
 								{/if}
 							{/if}
 							</div>
-							<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><p>The <a href="https://carfueldata.vehicle-certification-agency.gov.uk" target=”_blank”>Vehicle Certification Agency</a> has information about the fuel consumption rate of different vehicles.</p><button id="cavBut" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
-								{#if commMethod}
-									<div class="input-group">
-										<label class="visuallyhidden" for="fuelInput">Enter your vehicle's fuel consumption rate</label>
-										<input class="typedInput" id="fuelInput" bind:value={manualVeh} placeholder="Grams of CO2e per kilometre">
-										<button id="cavBut" on:click={searchManVeh(manualVeh)}>
-											Enter
-										</button>
-									</div>
-								{/if}
-							</div>
+							{#if (input[0].answerChoice=="Car")|(input[0].answerChoice=="Motorbike")}
+								<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><p>The <a href="https://carfueldata.vehicle-certification-agency.gov.uk" target=”_blank”>Vehicle Certification Agency</a> has information about the fuel consumption rate of different vehicles.</p><button id="cavBut" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
+									{#if commMethod}
+										<div class="input-group">
+											<label class="visuallyhidden" for="fuelInput">Enter your vehicle's fuel consumption rate</label>
+											<input class="typedInput" id="fuelInput" bind:value={manualVeh} placeholder="Grams of CO2e per kilometre">
+											<button id="cavBut" on:click={searchManVeh(manualVeh)}>
+												Enter
+											</button>
+										</div>
+									{/if}
+								</div>
+							{/if}
 							<p><strong>How far is your daily round commute?</strong></p>
 							<div id="slide-cont">
-								<RangeSlider bind:values={comLength} min=0 max={200} float suffix=" miles" step={0.1} springValues={{ stiffness: 0.3, damping: 0.7 }}/>
+								<RangeSlider bind:values={comLength} min=0 max={(input[0].answerChoice=="Cycle")?40:(input[0].answerChoice=="Walk")?20:200} float suffix=" miles" step={0.1} springValues={{ stiffness: 0.3, damping: 0.7 }}/>
 							</div>
 
 							<div aria-live="assertive">
 								{#if input[0].answerChoice=="Walk"}
 									<p>
-									Commuting <strong>{comLength} miles</strong> ({Math.round(km*10)/10} km), you will burn about <strong>{Math.round(km*70).toLocaleString()} calories</strong>, depending on the speed you walk and other metabolic factors.
+									Commuting <strong>{comLength} miles</strong> ({Math.round(km*10)/10} km) burns about <strong>{Math.round(km*47).toLocaleString()} calories</strong>, depending on the speed you walk and various metabolic factors.
+									</p>
+								{:else if input[0].answerChoice=="Cycle"}
+									<p>
+										Commuting <strong>{comLength} miles</strong> ({Math.round(km*10)/10} km) burns about <strong>{Math.round(km*28).toLocaleString()} calories</strong>, depending on your speed and various metabolic factors.
 									</p>
 								{:else}
 									<p>Commuting <strong>{comLength} miles</strong> ({Math.round(km*10)/10} km),
@@ -239,9 +241,8 @@
 							<div aria-live="assertive">
 								{#if input[0].answerChoice=="Walk"}
 									<p>
-										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will need approximately <strong>{Math.round(46*wfhDays*km*70).toLocaleString()} fewer calories</strong> in a typical year of 46 working weeks.
+										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will need approximately <strong>{Math.round(46*wfhDays*km*47).toLocaleString()} fewer calories</strong> in a typical year of 46 working weeks.
 									</p>
-
 									<p style="float:left; margin: 0px 50px 0px 0px;">How would you describe your diet?</p>
 									<select class="addressSelect" id="select1" bind:value={input[3].answerChoice} on:change={comLengthFunc}>
 										{#each input[3].answers as question}
@@ -252,12 +253,23 @@
 									</select>
 
 									<p>
-										On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*70)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*70).toLocaleString()} calories worth of food.
+										On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*47)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*47).toLocaleString()} calories worth of food.
 									</p>
-	
+								{:else if input[0].answerChoice=="Cycle"}
+									<p>
+										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will need approximately <strong>{Math.round(46*wfhDays*km*28).toLocaleString()} fewer calories</strong> in a typical year of 46 working weeks.
+									</p>
+									<p style="float:left; margin: 0px 50px 0px 0px;">How would you describe your diet?</p>
+									<select class="addressSelect" id="select1" bind:value={input[3].answerChoice} on:change={comLengthFunc}>
+										{#each input[3].answers as question}
+											<option selected={question.selected} value={question.text}>
+												{question.text}
+											</option>
+										{/each}
+									</select>
 
 									<p>
-										For many, working from home will not result in the expenditure of less calories and will therefore not represent a reduction in dietary emissions.
+										On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*28)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*28).toLocaleString()} calories worth of food.
 									</p>
 								{:else}
 									<p>
@@ -401,7 +413,7 @@
 		  </div>
 		  <div class="section__content--markdown">
 			<section>
-			  <p>This makes up about 12% of the total emissions of the average person in the UK.</p>
+			  <p style="margin-top: 32px">This makes up about {Math.round((Math.abs(((34*wfhDays*hoursHeated*897)/1000)-totCommEm)/12700)*100)}% of the total emissions of the average person in the UK.</p>
 			  <p>Heating only the room you are working in, working at local hubs and seasonal commuting patterns (travelling to work in the winter) could all prove to be environmentally friendly options for the future of work.</p>
 			</section>
 		  </div>
