@@ -5,6 +5,15 @@
 	import carTypeLookup from './carTypeLookup.json'
 	import homeFuelConv from './homeFuelConv.json'
 
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+	async function sendHeight() {
+		await sleep(100);
+		pymChild.sendHeight();
+	}
+	setInterval(sendHeight, 500);
+
 	function searchPC(pCode) {
 		let url = "https://epc.opendatacommunities.org/api/v1/domestic/search?postcode=" + pCode.replace(/\s/g, '')
 		fetch(url, { 
@@ -32,7 +41,6 @@
 		});
   	}
 	let manualVeh;
-	let manualHeat;
 	let selectAd;
 	let epcData;
 	let postCode = '';
@@ -54,7 +62,7 @@
 	let comLength = [comLU[input[0].answerChoice]];
 	$:km = 1.60934*comLength;
 	let numLU = {0: 'zero', 0.5: '0.5', 1: 'one', 1.5: 'one and a half', 2: 'two', 2.5: 'two and a half', 3: 'three', 3.5: 'three and a half', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8:'eight', 9: 'nine', 10:10, 11:11,12:12,13:13}
-	let selFuel;
+
 	$:vehcLU = vehicleLU["Car"][input[1].answerChoice][input[2].answerChoice];
 	$:vehConsump = (input[0].answerChoice=="Car")? vehcLU : vehicleLU[input[0].answerChoice];
 	$:yearSaving = (46*wfhDays*(vehConsump*comLength))/(share+1)
@@ -65,21 +73,43 @@
 	function plural(share) { return share==1?"":"s";}
 	function addMethod() { commMethod = !commMethod }
 	function addUsage() { usage = !usage }
-	function searchManHeat(searchManHeat) { return searchManHeat }
+	let manualHeat = null;
+	let manualHeatEnt = null;
+	let manualAuto = 'auto'
+	$: heatCost = (manualAuto=='manual')?manualHeatEnt: (addressSelected)?selectAd['heating-cost-current']:null;
+	function searchManHeat(searchManHeat) {
+		if (searchManHeat.slice(0, 1)=="£") {
+			searchManHeat = searchManHeat.slice(1)
+		}
+		if (isNaN(searchManHeat)) {
+			searchManHeat = null;	
+		} else {
+			manualHeatEnt = searchManHeat
+			manualAuto='manual'
+		}
+	}
+
+	let manualAutoType;
+	function heatType() {
+		manualAutoType='manual'  
+	}
+	let autoSelFuel
+	$:selFuel = (manualAutoType=='manual')?input[4].answerChoice:(manualAutoType=='auto')?autoSelFuel:"Gas";
 	function addressSel() {
+		console.log("II")
+		manualAutoType = 'auto'
 		addressSelected = true;
 		let gas = ["Gas: mains", "mains gas "]
 		let elec = ["Electricity", "electricity"]
 		let coal = ["Solid fuel: house coal", "house coal (not community)", "smokeless coal"]
 		let oil = ["Oil", "oil"]
 		let paraffin = ["Gas: bulk", "LPG (comm", "LPG (not ", "LPG - thi", "bottled L"]
-		if (gas.includes(selectAd['main-fuel'].slice(0,10))) { selFuel = "Gas" }
-		else if (elec.includes(selectAd['main-fuel'].slice(0,11))) { selFuel = "Electricity" }
-		else if (coal.includes(selectAd['main-fuel'])) { selFuel = "Coal and coke" }
-		else if (oil.includes(selectAd['main-fuel'].slice(0,3))) { selFuel = "Oil for central heating" }
-		else if (paraffin.includes(selectAd['main-fuel'].slice(0,9))) { selFuel = "Paraffin etc" }
-		else { selFuel = "No data" }
-		console.log("fuelConv", homeFuelConv[selFuel])
+		if (gas.includes(selectAd['main-fuel'].slice(0,10))) { autoSelFuel = "Gas" }
+		else if (elec.includes(selectAd['main-fuel'].slice(0,11))) { autoSelFuel = "Electricity" }
+		else if (coal.includes(selectAd['main-fuel'])) { autoSelFuel = "Coal and coke" }
+		else if (oil.includes(selectAd['main-fuel'].slice(0,3))) { autoSelFuel = "Oil for central heating" }
+		else if (paraffin.includes(selectAd['main-fuel'].slice(0,9))) { autoSelFuel = "Paraffin etc" }
+		else { autoSelFuel = "No data" }
 	}
 	function searchManVeh(manualVeh) { vehConsump = manualVeh/1000 }
 	function comLengthFunc() { comLength = [comLU[input[0].answerChoice]] }
@@ -97,6 +127,7 @@
 		}
 		wfhDays = v;
 	}
+
 </script>
 <main>
 	<div class="wrapper">
@@ -309,6 +340,7 @@
 			  {#if loadEr}
 				  <div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px;">
 					  <p><strong>Please enter a full and valid post code.</strong></p>
+					  <p>Approximations of home energy consumption may contain inaccuracies.</p>
 					  <p>If there is no publicly avaiable data for your address consider looking at a nearby property of similar size.</p><button id="cavBut" on:click={addUsage}>Or manually enter your heating costs</button>
 						{#if usage}
 						<div class="input-group">
@@ -323,7 +355,7 @@
 			  {/if}
 			  {#if searched}
 				  <form class="addressForm">
-					  <select class="addressSelect" id="select4" bind:value={selectAd} on:blur={e => addressSel(e)} on:change={e => addressSel(e)}>
+					  <select class="addressSelect" id="select4" bind:value={selectAd} on:blur={addressSel} on:change={addressSel}>
 						  <option value="" disabled selected>
 							  Select an address
 						  </option>
@@ -337,29 +369,40 @@
 					{#if addressSelected}
 						<div>
 							<p>
-								This {selectAd['total-floor-area']} m<sup>2</sup> {selectAd['property-type'].toLowerCase()} has {numLU[selectAd['number-heated-rooms']]} heated rooms and is heated using {homeFuelConv[selFuel][0]}, according to <a href="https://epc.opendatacommunities.org/" target=”_blank”>Energy Performance of Buildings data</a>.
+								This {selectAd['total-floor-area']} m<sup>2</sup> {selectAd['property-type'].toLowerCase()} has {numLU[selectAd['number-heated-rooms']]} heated rooms and is heated using {homeFuelConv[selFuel][0].toLowerCase()}, according to <a href="https://epc.opendatacommunities.org/" target=”_blank”>Energy Performance of Buildings data</a>.
 							</p>
 						</div>
+						<br>
 					{/if}
-					<br>
-					<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px;"><p>If there is no publicly avaiable data for your address consider looking at a nearby property of similar size.</p><button id="cavBut" on:click={addUsage}>Or manually enter your heating costs</button>
-					{#if usage}
-					<div class="input-group">
-						<label class="visuallyhidden" for="costOfHeat2">Enter your average annual heating costs</label>
-						<input id="costOfHeat2" class="typedInput" bind:value={manualHeat} placeholder="Average annual cost of heating (GBP)">
-						<button id="cavBut" on:click={searchManHeat(manualHeat)}>
-							Search
-						</button>
-					</div>
-					{/if}
-					</div>
 				{/if}
-				{#if addressSelected}
+				<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px;">
+					<p>Approximations of home energy consumption may contain inaccuracies.</p>
+					<p>If there is no publicly avaiable data for your address consider looking at a nearby property of similar size.</p><button id="cavBut" on:click={addUsage}>Or manually enter your heating costs</button>
+					{#if usage}
+						<div class="input-group">
+							<label class="visuallyhidden" for="costOfHeat2">Enter your average annual heating costs</label>
+							<input id="costOfHeat2" class="typedInput" bind:value={manualHeat} placeholder="Average annual cost of heating (GBP)">
+							<button id="cavBut" on:click={searchManHeat(manualHeat)}>
+								Search
+							</button>
+						</div>
+						<p style="float:left; margin: 0px 50px 0px 0px;">How is your heat generated?</p>
+						<select class="addressSelect" id="select1" bind:value={input[4].answerChoice} on:change={heatType}>
+							{#each input[4].answers as question}
+								<option selected={question.selected} value={question.text}>
+									{homeFuelConv[question.text][0]}
+								</option>
+							{/each}
+						</select>
+					{/if}
+				</div>
+
+				{#if addressSelected | (manualHeatEnt>0)}
 					<div>
 						<p>
-							Heating this property costs approximately £{selectAd['heating-cost-current']} annually, based on the Standard Assessment Procedure's (SAP) estimate of 2,618 hours of home heating per year at about 21°C.
+							Heating this property costs approximately £{heatCost} annually, based on the Standard Assessment Procedure's (SAP) estimate of 2,618 heating hours per year at about 21°C.
 						<p>
-							Based on DEFRA's conversion factors, the property's heating system emits about {Math.round(selectAd['heating-cost-current']*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2e each year. This is approximately <strong>{Math.round(1000*(selectAd['heating-cost-current']*homeFuelConv[selFuel][1])/2618)} grams of CO2e</strong> for each hour the heating is switched on.
+							Based on DEFRA's conversion factors, the property's heating system emits about {Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2e each year. This is approximately <strong>{Math.round(1000*(heatCost*homeFuelConv[selFuel][1])/2618)} grams of CO2e</strong> for each hour the heating is switched on.
 						</p>
 					</div>
 				{:else}
@@ -370,23 +413,23 @@
 			<div id="slide-cont">
 				<RangeSlider bind:values={hoursHeated} min=0 max={24} float suffix=" hours per day" step={0.5} springValues={{ stiffness: 0.3, damping: 0.9 }}/>
 			</div>
-			{#if addressSelected}
+			{#if addressSelected | (manualHeatEnt>0)}
 				<p>
-					Heating your home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*selectAd['heating-cost-current']*homeFuelConv[selFuel][1])/2618)*10)/10} kg CO2e per home working day</strong> during the heating season.
+					Heating your home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)*10)/10} kg CO2e per home working day</strong> during the heating season.
 				</p>
 				<p>
-					Considering SAP's heating season of 34 weeks, working from home {numLU[wfhDays]} day{plural(wfhDays)} per week, your heating system would emit an additional <strong>{Math.round(((34*wfhDays*hoursHeated*selectAd['heating-cost-current']*homeFuelConv[selFuel][1])/2618))} kg CO2e per year</strong>.
+					Considering SAP's heating season of 34 weeks, working from home {numLU[wfhDays]} day{plural(wfhDays)} per week, your heating system would emit an additional <strong>{Math.round(((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618))} kg CO2e per year</strong>.
 				</p>
 			<div aria-live="assertive">
 			  <div class = "green" style="min-height: 337px;">
 				<p>
-					Accounting for the emissions saved on your commute minus the additional emissions from heating your home, you will <strong>{(((34*wfhDays*hoursHeated*selectAd['heating-cost-current']*homeFuelConv[selFuel][1])/2618)-totCommEm)>0?"emit about an extra":"save approximately"} {Math.round(Math.abs(((34*wfhDays*hoursHeated*selectAd['heating-cost-current']*homeFuelConv[selFuel][1])/2618)-totCommEm))} kg CO2e per year</strong>.
+					Accounting for the emissions saved on your commute minus the additional emissions from heating your home, you will <strong>{(((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)-totCommEm)>0?"emit about an extra":"save approximately"} {Math.round(Math.abs(((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)-totCommEm))} kg CO2e per year</strong>.
 				</p>
 				<p>A mature tree can absorb around 22 kg CO2 per year. Therefore, the change in your emissions due to working from home would equate to the carbon capture of about <strong>{
-				  ((Math.abs(((34*wfhDays*hoursHeated*selectAd['heating-cost-current']*homeFuelConv[selFuel][1])/2618)-totCommEm))/22).toFixed(0)
+				  ((Math.abs(((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)-totCommEm))/22).toFixed(0)
 				  } trees</strong>.</p>
 				<div aria-hidden="true">
-					<p style="font-size: xx-large;">{Array(+((Math.abs(((34*wfhDays*hoursHeated*selectAd['heating-cost-current']*homeFuelConv[selFuel][1])/2618)-totCommEm))/22).toFixed(0)).fill(0).map(d => tree).join("")}</p>
+					<p style="font-size: xx-large;">{Array(+((Math.abs(((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)-totCommEm))/22).toFixed(0)).fill(0).map(d => tree).join("")}</p>
 				</div>
 			  </div>
 			</div>
@@ -414,7 +457,7 @@
 		  <div class="section__content--markdown">
 			<section>
 			  <p style="margin-top: 32px">This makes up about {Math.round((Math.abs(((34*wfhDays*hoursHeated*897)/1000)-totCommEm)/12700)*100)}% of the total emissions of the average person in the UK.</p>
-			  <p>Heating only the room you are working in, working at local hubs and seasonal commuting patterns (travelling to work in the winter) could all prove to be environmentally friendly options for the future of work.</p>
+			  <p>Only heating the room you are working in, working at local hubs, and seasonal commuting patterns could all prove to be environmentally friendly options for the future of work.</p>
 			</section>
 		  </div>
 		</article> 
