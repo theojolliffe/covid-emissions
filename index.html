@@ -10,20 +10,7 @@
 	<link rel='stylesheet' href='./global.css'>
 	<link rel='stylesheet' href='./build/bundle.css'>
 	
-	<script src="https://cdn.ons.gov.uk/vendor/pym/1.3.2/pym.min.js"></script><script>
-		var pymChild = new pym.Child();
-
-		function sleep(ms) {
-			return new Promise(resolve => setTimeout(resolve, ms));
-		}
-		async function sendHeight() {
-			await sleep(100);
-			pymChild.sendHeight();
-		}
-		setInterval(sendHeight, 500);
-
-
-	  </script>
+	<script src="https://cdn.ons.gov.uk/vendor/pym/1.3.2/pym.min.js"></script><script></script>
 </head>
 
 <body>
@@ -35,6 +22,12 @@
 			document.write('<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,fetch"></scr' + 'ipt>');
 			document.write('<script defer src="./build/bundle.legacy.js"></scr' + 'ipt>');
 		}
+		var pymChild = new pym.Child();
+
+		setInterval(function() {
+			pymChild.sendHeight();
+		},1000);
+
 	</script>
 </body>
 </html>
