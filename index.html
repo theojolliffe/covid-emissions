@@ -24,9 +24,11 @@
 	</script>
 	<script>
 		var pymChild = new pym.Child();
+		var body = document.body;
+
 		setInterval(function() {
-			pymChild.sendHeight();
-		},1000);
+		  pymChild.sendMessage('height', Math.max( body.scrollHeight, body.offsetHeight )));
+		},500);
 	</script>
 </body>
 </html>
