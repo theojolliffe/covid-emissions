@@ -502,7 +502,7 @@
   }
   .col {
 	overflow: visible;
-	margin-left: 16px !important;
+	margin-left: 0 !important;
 	margin-top: 0 !important;
 	width: 640px;
 	margin: 0;
@@ -841,13 +841,13 @@
   @media (min-width: 768px) {
 	.col-wrap {
 		width: 768px;
-		margin-left: -16px;
+		margin-left: -8px;
 	}
   }
   @media (min-width: 992px) {
 	.col-wrap {
 		width: 960px;
-		margin-left: -16px;
+		margin-left: -8px;
 	}
   } 
 
