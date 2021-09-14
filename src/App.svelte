@@ -4,7 +4,8 @@
 	import RangeSlider from "svelte-range-slider-pips";
 	import carTypeLookup from './carTypeLookup.json'
 	import homeFuelConv from './homeFuelConv.json'
-	//import sharePic from '../assets/Car-share_64x64px.svg'
+	import sharePic from '../assets/Car-share_64x64px.svg'
+	import CO2ePic from '../assets/C02e_64x64px_NEW.svg'
 
 	function searchPC(pCode) {
 		let url = "https://epc.opendatacommunities.org/api/v1/domestic/search?postcode=" + pCode.replace(/\s/g, '')
@@ -258,26 +259,26 @@
 
 							<div class="grid-cont">
 								<div class="grid-box" aria-live="assertive">
-									{#if input[0].answerChoice=="Walk"}
-										<p>
-										Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*47).toLocaleString()} calories</strong>, depending on the speed you walk and various metabolic factors.
-										</p>
-									{:else if input[0].answerChoice=="Cycle"}
-										<p>
+									<div style="width:60px">
+										{@html sharePic}
+									</div>
+									<p class="pbox">
+										{#if input[0].answerChoice=="Walk"}
+											Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*47).toLocaleString()} calories</strong>, depending on the speed you walk and various metabolic factors.
+										{:else if input[0].answerChoice=="Cycle"}
 											Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*28).toLocaleString()} calories</strong>, depending on your speed and various metabolic factors.
-										</p>
-									{:else}
-										<p>Commuting <strong>{comLength} miles</strong>,
-										{#if input[0].answerChoice=="Car"}
-											{#if share==0}
-												without sharing your journey,
-											{:else}
-												sharing your journey with {numLU[share]} other{plural(share)}, individually
+										{:else}
+											Commuting <strong>{comLength} miles</strong>,
+											{#if input[0].answerChoice=="Car"}
+												{#if share==0}
+													without sharing your journey,
+												{:else}
+													sharing your journey with {numLU[share]} other{plural(share)}, individually
+												{/if}
 											{/if}
+											you emit approximately <strong class="strongblue">{Math.round((vehConsump*km)/(share+1)*10)/10} kg CO2e</strong>
 										{/if}
-										you emit approximately <strong class="strongblue">{Math.round((vehConsump*km)/(share+1)*10)/10} kg CO2e</strong>
-										</p>
-									{/if}
+									</p>
 								</div>
 
 								<div class="grid-box" aria-live="assertive">
@@ -293,7 +294,6 @@
 												</option>
 											{/each}
 										</select>
-
 										<p>
 											On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*47)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*47).toLocaleString()} calories worth of food.
 										</p>
@@ -309,13 +309,16 @@
 												</option>
 											{/each}
 										</select>
-
 										<p>
 											On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*28)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*28).toLocaleString()} calories worth of food.
 										</p>
 									{:else}
-										<p>
-											Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will save  <strong>{Math.round(yearSaving*10)/10} kg CO2e</strong> across a 46 working week year.
+									<div style="width:70px">
+										{@html CO2ePic}
+									</div>
+										<p class="pbox">
+											
+											Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a 46 working week year you will save <strong class="strongblue">{Math.round(yearSaving*10)/10} kg CO2e</strong>
 										</p>
 									{/if}
 								</div>
@@ -869,6 +872,7 @@ svg { transition: transform 0.2s ease-in;
 	display: grid;
 	grid-template-columns: 49% 49%;
 	gap: 2%;
+	margin-bottom: 24px;
 }
 .grid-box {
     background-color: #F5F5F6;
@@ -879,5 +883,9 @@ svg { transition: transform 0.2s ease-in;
 	font-size: xx-large;
     display: block;
     color: #206095;
+	margin-top: 12px;
+}
+.pbox {
+	margin-bottom: 0 !important;
 }
   </style>

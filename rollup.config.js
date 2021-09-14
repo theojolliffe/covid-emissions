@@ -41,6 +41,31 @@ export default [
 			file: 'public/build/bundle.js'
 		},
 		plugins: [
+			inlineSvg({
+				// Removes specified tags and its children. You can specify tags by setting removingTags query array.
+				// default: false
+				removeTags: false,
+			
+				// warning: this won't work unless you specify removeTags: true
+				// default: ['title', 'desc', 'defs', 'style']
+				removingTags: ['title', 'desc', 'defs', 'style'],
+			   
+				// warns about present tags, ex: ['desc', 'defs', 'style']
+				// default: []
+				warnTags: [], 
+		   
+				// Removes `width` and `height` attributes from <svg>.
+				// default: true
+				removeSVGTagAttrs: true,
+			
+				// Removes attributes from inside the <svg>.
+				// default: []
+				removingTagAttrs: [],
+			
+				// Warns to console about attributes from inside the <svg>.
+				// default: []
+				warnTagAttrs: []
+			}),
 			json(),
 			svelte({
 				// enable run-time checks when not in production
@@ -84,6 +109,31 @@ export default [
 			file: 'public/build/bundle.legacy.js'
 		},
 		plugins: [
+			inlineSvg({
+				// Removes specified tags and its children. You can specify tags by setting removingTags query array.
+				// default: false
+				removeTags: false,
+			
+				// warning: this won't work unless you specify removeTags: true
+				// default: ['title', 'desc', 'defs', 'style']
+				removingTags: ['title', 'desc', 'defs', 'style'],
+			   
+				// warns about present tags, ex: ['desc', 'defs', 'style']
+				// default: []
+				warnTags: [], 
+		   
+				// Removes `width` and `height` attributes from <svg>.
+				// default: true
+				removeSVGTagAttrs: true,
+			
+				// Removes attributes from inside the <svg>.
+				// default: []
+				removingTagAttrs: [],
+			
+				// Warns to console about attributes from inside the <svg>.
+				// default: []
+				warnTagAttrs: []
+			}),
 			json(),
 			svelte({
 				dev: false,
