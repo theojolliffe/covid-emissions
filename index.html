@@ -10,7 +10,7 @@
 	<link rel='stylesheet' href='./global.css'>
 	<link rel='stylesheet' href='./build/bundle.css'>
 	
-	<script src="https://cdn.ons.gov.uk/vendor/pym/1.3.2/pym.min.js"></script><script></script>
+	<script src="https://cdn.ons.gov.uk/vendor/pym/1.3.2/pym.min.js"></script>
 </head>
 
 <body>
@@ -23,8 +23,7 @@
 		}
 	</script>
 	<script>
-		var pymChild = new pym.Child();
-
+		var pymChild = new pym.Child({ id: 'interactive' });
 		setInterval(function() {
 			pymChild.sendHeight();
 		},1000);
