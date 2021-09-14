@@ -50,7 +50,7 @@
 	let wfhDpW = 1;
 	let wfhDays=1;
 	let tree = "🌳"
-	let bulb = "💡"
+	let tv = "📺"
 	let limit = null
 	let commMethod = false;
 	let usage = false;
@@ -179,37 +179,37 @@
 							<div aria-live="assertive">
 							{#if input[0].answerChoice=="Walk"}
 								<p style="display: inline-block;">
-									The average daily round commute is <strong>1.8 miles</strong> (2.9 km) for those who walk to work, according to the National Travel Survey.</p><p>Walking to work emits no greenhouse gas, although GHG is emitted producing the food needed for the calories to walk.
+									The average daily round commute is <strong>1.8 miles</strong> for those who walk to work, according to the National Travel Survey.</p><p>Walking to work emits no greenhouse gas, although GHG is emitted producing the food needed for the calories to walk.
 								</p>
 								<p>
 									For some, working from home will not result in the consumption of less calories and will therefore not represent a reduction in dietary emissions.
 								</p>
 							{:else if input[0].answerChoice=="Cycle"}
 								<p style="display: inline-block;">
-								The average daily round commute is <strong>6.8 miles</strong> (10.9 km) for those who cycle to work, according to the National Travel Survey.</p><p>Cycling to work emits no greenhouse gas, although bike manufacturing produces some greenhouse gas, as does producing the food needed for energy to cycle.
+								The average daily round commute is <strong>6.8 miles</strong> for those who cycle to work, according to the National Travel Survey.</p><p>Cycling to work emits no greenhouse gas, although bike manufacturing produces some greenhouse gas, as does producing the food needed for energy to cycle.
 								</p>
 								<p>
 									For some, working from home will not result in the consumption of less calories and will therefore not represent a reduction in dietary emissions.
 								</p>
 							{:else if input[0].answerChoice=="Bus"}
 								<p style="display: inline-block;">
-									The average daily round commute is <strong>12.7 miles</strong> (20.4 km) for people who take the bus, according to the National Travel Survey. The average round commute on a London bus is <strong>9.6 miles</strong> (15.4 km).</p><p>Taking the bus to work emits approximately <strong>103 grams of CO2e</strong> per kilometre for each passenger.<p>
+									The average daily round commute is <strong>12.7 miles</strong> for people who take the bus, according to the National Travel Survey. The average round commute on a London bus is <strong>9.6 miles</strong>.</p><p>Taking the bus to work emits approximately <strong>103 grams of CO2e</strong> per kilometre for each passenger.<p>
 								</p> 
 							{:else if input[0].answerChoice=="Train" }
 								<p style="display: inline-block;">
-									The average daily round commute by train is <strong>47 miles</strong> (75.6 km), according to the National Travel Survey.</p><p>Taking the train to work emits, on average, <strong>36 grams of CO2e</strong> per kilometre for each passenger, depending on how full the train is.
+									The average daily round commute by train is <strong>47 miles</strong>, according to the National Travel Survey.</p><p>Taking the train to work emits, on average, <strong>36 grams of CO2e</strong> per kilometre for each passenger, depending on how full the train is.
 								</p> 
 							{:else if input[0].answerChoice=="London Underground" }
 								<p style="display: inline-block;">
-									The average daily round commute on the London Underground is <strong>18.6 miles</strong> (30 km), according to the National Travel Survey.</p><p>Taking the tube to work emits, on average, <strong>28 grams of CO2e</strong> per kilometre for each passenger, depending on how full the tube is.
+									The average daily round commute on the London Underground is <strong>18.6 miles</strong>, according to the National Travel Survey.</p><p>Taking the tube to work emits, on average, <strong>28 grams of CO2e</strong> per kilometre for each passenger, depending on how full the tube is.
 								</p>
 							{:else if input[0].answerChoice=="Motorbike" }
 								<p style="display: inline-block;">
-									The average daily round motorbike is <strong>18 miles</strong> (29 km), according to the National Travel Survey.</p><p>Riding a motorbike to work emits about <strong>101 grams of CO2e</strong> per kilometre.
+									The average daily round motorbike is <strong>18 miles</strong>, according to the National Travel Survey.</p><p>Riding a motorbike to work emits about <strong>101 grams of CO2e</strong> per kilometre.
 								</p>
 							{:else}
 								<p style="display: inline-block;">
-									The average daily round car commute is <strong>20.9 miles</strong> (33.6 km), according to the National Travel Survey.</p><p>This vehicle emits approximately <strong>{Math.round(vehcLU*1000)} grams of CO2e</strong> per kilometre.
+									The average daily round car commute is <strong>20.9 miles</strong>, according to the National Travel Survey.</p><p>This vehicle emits approximately <strong>{Math.round(vehcLU*1000)} grams of CO2e</strong> per kilometre.
 								</p>
 								{#if input[2].answerChoice=="Electric Vehicle"}
 									<p>Although electric vehicles do not directly emit any greenhouse gas, the electricity they run on has an associated carbon cost.</p>
@@ -237,14 +237,14 @@
 							<div aria-live="assertive">
 								{#if input[0].answerChoice=="Walk"}
 									<p>
-									Commuting <strong>{comLength} miles</strong> ({Math.round(km*10)/10} km) burns about <strong>{Math.round(km*47).toLocaleString()} calories</strong>, depending on the speed you walk and various metabolic factors.
+									Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*47).toLocaleString()} calories</strong>, depending on the speed you walk and various metabolic factors.
 									</p>
 								{:else if input[0].answerChoice=="Cycle"}
 									<p>
-										Commuting <strong>{comLength} miles</strong> ({Math.round(km*10)/10} km) burns about <strong>{Math.round(km*28).toLocaleString()} calories</strong>, depending on your speed and various metabolic factors.
+										Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*28).toLocaleString()} calories</strong>, depending on your speed and various metabolic factors.
 									</p>
 								{:else}
-									<p>Commuting <strong>{comLength} miles</strong> ({Math.round(km*10)/10} km),
+									<p>Commuting <strong>{comLength} miles</strong>,
 									{#if input[0].answerChoice=="Car"}
 										{#if share==0}
 											without sharing your journey,
@@ -312,10 +312,10 @@
 							<div aria-live="assertive">
 							<div class = "green">
 								<p>
-								This is similar to the quantity of emissions asociated with using about <strong>{Math.round((totCommEm/0.23314)*10)/10} KWh</strong> of electricity in the UK, based on BEIS conversion factors.</p><p>A 60 Watt light bulb could be powered for about <strong>{Math.round(((totCommEm/0.23314)/0.06)/168)} full weeks</strong> using this much electricity.
+								This is similar to the quantity of emissions asociated with using about <strong>{Math.round((totCommEm/0.23314)*10)/10} KWh</strong> of electricity in the UK, based on BEIS conversion factors.</p><p>A 60 Watt TV could be powered for about <strong>{Math.round(((totCommEm/0.23314)/0.06)/168)} full weeks</strong> using this much electricity.
 								</p>
 								<div aria-hidden="true">
-									<p style="font-size: xx-large;">{Array(+(((totCommEm/0.23314)/0.06)/168).toFixed(0)).fill(0).map(d => bulb).join("")}</p>
+									<p style="font-size: xx-large;">{Array(+(((totCommEm/0.23314)/0.06)/168).toFixed(0)).fill(0).map(d => tv).join("")}</p>
 								</div>
 							</div>
 						</div>
