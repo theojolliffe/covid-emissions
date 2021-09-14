@@ -15,19 +15,19 @@
 
 <body>
 	<script>
-		var pymChild = new pym.Child({ id: 'interactive' });
 		if (window.fetch && window.Promise && [].includes && Object.assign && window.Map) {
 			document.write('<script defer src="./build/bundle.js"></scr' + 'ipt>');
 		} else {
 			document.write('<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,fetch"></scr' + 'ipt>');
 			document.write('<script defer src="./build/bundle.legacy.js"></scr' + 'ipt>');
 		}
+	</script>
+	<script>
 		var pymChild = new pym.Child();
 
 		setInterval(function() {
 			pymChild.sendHeight();
 		},1000);
-
 	</script>
 </body>
 </html>
