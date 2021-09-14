@@ -503,7 +503,7 @@
   .col {
 	overflow: visible;
 	margin-left: 16px !important;
-	margin-top: 32px !important;
+	margin-top: 0 !important;
 	width: 640px;
 	margin: 0;
 	float: left;
@@ -528,8 +528,8 @@
   }
   h3 {
 	  font-size: 24px;
-	  margin: 32px 0 16px 0;
-	  padding: 24px 0 0 0;
+	  margin: 0 0 16px 0;
+	  padding: 0 0 0 0;
 	  font-weight: bold;
 	  line-height: 32px;
   }
