@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import babel from 'rollup-plugin-babel';
 import json from '@rollup/plugin-json';
 import css from 'rollup-plugin-css-only';
+import inlineSvg from 'rollup-plugin-inline-svg';
 
 const production = !process.env.ROLLUP_WATCH;
 

@@ -4,6 +4,7 @@
 	import RangeSlider from "svelte-range-slider-pips";
 	import carTypeLookup from './carTypeLookup.json'
 	import homeFuelConv from './homeFuelConv.json'
+	//import sharePic from '../assets/Car-share_64x64px.svg'
 
 	function sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
@@ -128,6 +129,14 @@
 		wfhDays = v;
 	}
 
+
+
+	import { slide } from "svelte/transition";
+	let isOpen = false
+	const toggle = () => isOpen = !isOpen
+
+
+
 </script>
 <main>
 	<div class="wrapper">
@@ -138,6 +147,7 @@
 							<header>
 								<h3>The commute</h3>
 							</header>
+
 							<form style="float:left">
 								<p style="float:left; margin: 0px 50px 0px 0px;">How do you travel to work?</p>
 								<select class="addressSelect" id="select1" bind:value={input[0].answerChoice} on:change={comLengthFunc}>
@@ -147,6 +157,7 @@
 										</option>
 									{/each}
 								</select>
+
 								{#if input[0].answerChoice=="Car"}
 									<p style="float:left; margin: 0px 50px 0px 0px;">What kind of car do you drive?</p>
 									<select class="addressSelect" id="select2" bind:value={input[1].answerChoice}>
@@ -176,6 +187,25 @@
 									</div>
 								{/if}
 							</form>
+							{#if (input[0].answerChoice=="Car")|(input[0].answerChoice=="Motorbike")}
+								<button id="accord" on:click={toggle} aria-expanded={isOpen}><svg style="tran"  width="20" height="20" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg> {"Vehicle not listed? Manually enter your fuel consumption rate"}</button>
+								{#if isOpen}
+								<div>
+									<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><p>The <a href="https://carfueldata.vehicle-certification-agency.gov.uk" target=”_blank”>Vehicle Certification Agency</a> has information about the fuel consumption rate of different vehicles.</p><button id="cavBut" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
+										{#if commMethod}
+											<div class="input-group">
+												<label class="visuallyhidden" for="fuelInput">Enter your vehicle's fuel consumption rate</label>
+												<input class="typedInput" id="fuelInput" bind:value={manualVeh} placeholder="Grams of CO2e per kilometre">
+												<button id="cavBut" on:click={searchManVeh(manualVeh)}>
+													Enter
+												</button>
+											</div>
+										{/if}
+									</div>
+								</div>
+								{/if}
+							{/if}
+
 							<div aria-live="assertive">
 							{#if input[0].answerChoice=="Walk"}
 								<p style="display: inline-block;">
@@ -216,46 +246,11 @@
 								{/if}
 							{/if}
 							</div>
-							{#if (input[0].answerChoice=="Car")|(input[0].answerChoice=="Motorbike")}
-								<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><p>The <a href="https://carfueldata.vehicle-certification-agency.gov.uk" target=”_blank”>Vehicle Certification Agency</a> has information about the fuel consumption rate of different vehicles.</p><button id="cavBut" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
-									{#if commMethod}
-										<div class="input-group">
-											<label class="visuallyhidden" for="fuelInput">Enter your vehicle's fuel consumption rate</label>
-											<input class="typedInput" id="fuelInput" bind:value={manualVeh} placeholder="Grams of CO2e per kilometre">
-											<button id="cavBut" on:click={searchManVeh(manualVeh)}>
-												Enter
-											</button>
-										</div>
-									{/if}
-								</div>
-							{/if}
 							<p><strong>How far is your daily round commute?</strong></p>
 							<div id="slide-cont">
 								<RangeSlider bind:values={comLength} min=0 max={(input[0].answerChoice=="Cycle")?40:(input[0].answerChoice=="Walk")?20:200} float suffix=" miles" step={0.1} springValues={{ stiffness: 0.3, damping: 0.7 }}/>
 							</div>
 
-							<div aria-live="assertive">
-								{#if input[0].answerChoice=="Walk"}
-									<p>
-									Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*47).toLocaleString()} calories</strong>, depending on the speed you walk and various metabolic factors.
-									</p>
-								{:else if input[0].answerChoice=="Cycle"}
-									<p>
-										Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*28).toLocaleString()} calories</strong>, depending on your speed and various metabolic factors.
-									</p>
-								{:else}
-									<p>Commuting <strong>{comLength} miles</strong>,
-									{#if input[0].answerChoice=="Car"}
-										{#if share==0}
-											without sharing your journey,
-										{:else}
-											sharing your journey with {numLU[share]} other{plural(share)}, individually
-										{/if}
-									{/if}
-									you emit approximately <strong>{Math.round((vehConsump*km)/(share+1)*10)/10} kg CO2e</strong>.
-									</p>
-								{/if}
-							</div>
 							<p style="float:left; margin: 0px 50px 0px 0px;">How many days will you work from home each week?</p>
 							<div class="blockFlex">
 								<div class="input-group">
@@ -269,45 +264,72 @@
 								</div>
 							{/if}
 
-							<div aria-live="assertive">
-								{#if input[0].answerChoice=="Walk"}
-									<p>
-										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will need approximately <strong>{Math.round(46*wfhDays*km*47).toLocaleString()} fewer calories</strong> in a typical year of 46 working weeks.
-									</p>
-									<p style="float:left; margin: 0px 50px 0px 0px;">How would you describe your diet?</p>
-									<select class="addressSelect" id="select1" bind:value={input[3].answerChoice} on:change={comLengthFunc}>
-										{#each input[3].answers as question}
-											<option selected={question.selected} value={question.text}>
-												{question.text}
-											</option>
-										{/each}
-									</select>
 
-									<p>
-										On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*47)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*47).toLocaleString()} calories worth of food.
-									</p>
-								{:else if input[0].answerChoice=="Cycle"}
-									<p>
-										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will need approximately <strong>{Math.round(46*wfhDays*km*28).toLocaleString()} fewer calories</strong> in a typical year of 46 working weeks.
-									</p>
-									<p style="float:left; margin: 0px 50px 0px 0px;">How would you describe your diet?</p>
-									<select class="addressSelect" id="select1" bind:value={input[3].answerChoice} on:change={comLengthFunc}>
-										{#each input[3].answers as question}
-											<option selected={question.selected} value={question.text}>
-												{question.text}
-											</option>
-										{/each}
-									</select>
+							<div class="grid-cont">
+								<div class="grid-box" aria-live="assertive">
+									{#if input[0].answerChoice=="Walk"}
+										<p>
+										Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*47).toLocaleString()} calories</strong>, depending on the speed you walk and various metabolic factors.
+										</p>
+									{:else if input[0].answerChoice=="Cycle"}
+										<p>
+											Commuting <strong>{comLength} miles</strong> burns about <strong>{Math.round(km*28).toLocaleString()} calories</strong>, depending on your speed and various metabolic factors.
+										</p>
+									{:else}
+										<p>Commuting <strong>{comLength} miles</strong>,
+										{#if input[0].answerChoice=="Car"}
+											{#if share==0}
+												without sharing your journey,
+											{:else}
+												sharing your journey with {numLU[share]} other{plural(share)}, individually
+											{/if}
+										{/if}
+										you emit approximately <strong class="strongblue">{Math.round((vehConsump*km)/(share+1)*10)/10} kg CO2e</strong>
+										</p>
+									{/if}
+								</div>
 
-									<p>
-										On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*28)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*28).toLocaleString()} calories worth of food.
-									</p>
-								{:else}
-									<p>
-										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will save  <strong>{Math.round(yearSaving*10)/10} kg CO2e</strong> across a 46 working week year.
-									</p>
-								{/if}
+								<div class="grid-box" aria-live="assertive">
+									{#if input[0].answerChoice=="Walk"}
+										<p>
+											Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will need approximately <strong>{Math.round(46*wfhDays*km*47).toLocaleString()} fewer calories</strong> in a typical year of 46 working weeks.
+										</p>
+										<p style="float:left; margin: 0px 50px 0px 0px;">How would you describe your diet?</p>
+										<select class="addressSelect" id="select1" bind:value={input[3].answerChoice} on:change={comLengthFunc}>
+											{#each input[3].answers as question}
+												<option selected={question.selected} value={question.text}>
+													{question.text}
+												</option>
+											{/each}
+										</select>
+
+										<p>
+											On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*47)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*47).toLocaleString()} calories worth of food.
+										</p>
+									{:else if input[0].answerChoice=="Cycle"}
+										<p>
+											Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will need approximately <strong>{Math.round(46*wfhDays*km*28).toLocaleString()} fewer calories</strong> in a typical year of 46 working weeks.
+										</p>
+										<p style="float:left; margin: 0px 50px 0px 0px;">How would you describe your diet?</p>
+										<select class="addressSelect" id="select1" bind:value={input[3].answerChoice} on:change={comLengthFunc}>
+											{#each input[3].answers as question}
+												<option selected={question.selected} value={question.text}>
+													{question.text}
+												</option>
+											{/each}
+										</select>
+
+										<p>
+											On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((dietLU[input[3].answerChoice]*(46*wfhDays*km*28)/2000)*10)/10} kg CO2e</strong> would be emitted during the production of {Math.round(46*wfhDays*km*28).toLocaleString()} calories worth of food.
+										</p>
+									{:else}
+										<p>
+											Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, you will save  <strong>{Math.round(yearSaving*10)/10} kg CO2e</strong> across a 46 working week year.
+										</p>
+									{/if}
+								</div>
 							</div>
+
 				
 							<div aria-live="assertive">
 							<div class = "green">
@@ -835,4 +857,36 @@
 	}
   } 
 
+
+
+svg { transition: transform 0.2s ease-in;
+}
+
+[aria-expanded=true] svg { transform: rotate(0.25turn); }
+
+#accord {
+	text-decoration: underline;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 32px;
+	color: #206095;
+	word-wrap: break-word;
+	background-color: white;
+    border: none;
+}
+.grid-cont {
+	display: grid;
+	grid-template-columns: 49% 49%;
+	gap: 2%;
+}
+.grid-box {
+    background-color: #F5F5F6;
+    padding: 5%;
+	border-radius: 5px;
+}
+.strongblue {
+	font-size: xx-large;
+    display: block;
+    color: #206095;
+}
   </style>
