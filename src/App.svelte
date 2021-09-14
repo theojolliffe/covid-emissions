@@ -723,7 +723,16 @@
 	 box-shadow: 1px 1px 2px 0px rgb(6 12 55 / 34%);
  }
 
- .green { background-color:#a1d99b; border-radius: 5px; padding: 20px; font-size: xx-large;}
+ .green { 
+	 background-color:#a1d99b; border-radius: 5px; padding: 20px; font-size: xx-large;
+	 display: none;
+	}
+	@supports (display: grid) {
+		.green {
+			display: block !important;
+		}
+	}
+
  button {
    font-family: inherit;
    font-size: 100%;
