@@ -6,15 +6,6 @@
 	import homeFuelConv from './homeFuelConv.json'
 	//import sharePic from '../assets/Car-share_64x64px.svg'
 
-	function sleep(ms) {
-		return new Promise(resolve => setTimeout(resolve, ms));
-	}
-	async function sendHeight() {
-		await sleep(100);
-		pymChild.sendHeight();
-	}
-	setInterval(sendHeight, 500);
-
 	function searchPC(pCode) {
 		let url = "https://epc.opendatacommunities.org/api/v1/domestic/search?postcode=" + pCode.replace(/\s/g, '')
 		fetch(url, { 

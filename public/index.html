@@ -12,12 +12,17 @@
 	
 	<script src="https://cdn.ons.gov.uk/vendor/pym/1.3.2/pym.min.js"></script><script>
 		var pymChild = new pym.Child();
-	  
 
-		setInterval(function() {
+		function sleep(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+		async function sendHeight() {
+			await sleep(100);
 			pymChild.sendHeight();
-		  },1000);
-		  
+		}
+		setInterval(sendHeight, 500);
+
+
 	  </script>
 </head>
 
