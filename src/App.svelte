@@ -550,12 +550,14 @@
 
 				<div aria-live="assertive">
 					<div class = "green">
-						<div style="width:100px; float:left">
+						<div style="width:100px; float:left; padding-top: 15px;
+						margin-left: -10px;
+						margin-right: 10px;">
 							{@html treePic2}
 						</div>
 						<div></div>
 
-						<p>A mature tree can absorb around 22 kg CO2 per year. Therefore, the change in your emissions due to working from home would equate to the carbon capture of about <strong>{
+						<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, the change in your emissions would equate to the carbon capture of about <strong class="stronggreen">{
 							((Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))/22).toFixed(0)
 							} trees</strong>
 						</p>
@@ -575,12 +577,14 @@
 
 				<div aria-live="assertive">
 					<div class = "green">
-						<div style="width:100px; float:left">
+						<div style="width:100px; float:left; padding-top: 15px;
+						margin-left: -10px;
+						margin-right: 10px;">
 							{@html treePic2}
 						</div>
 						<div></div>
 
-						<p>A mature tree can absorb around 22 kg CO2 per year. Therefore, the change in your emissions due to working from home would equate to the carbon capture of about <strong>{((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} trees</strong>.</p>
+						<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, the change in your emissions would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} trees</strong></p>
 					</div>
 				</div>
 			{/if}
@@ -612,6 +616,7 @@
   }
   main {
 	  display: block;
+	  font-family: "Open Sans",Helvetica,Arial,sans-serif !important;
   }
   article {
 	  display: block;
@@ -966,6 +971,7 @@
 	  width: 100%;
 	  margin: 0 0;
 	  padding: 0 16px;
+	  font-family: "Open Sans",Helvetica,Arial,sans-serif !important;
   }
   @media (min-width: 768px) {
 	.wrapper {
@@ -1040,7 +1046,18 @@ svg { transition: transform 0.2s ease-in;
     color: #FE781F;
 	margin-top: 12px;
 }
+
+.stronggreen {
+	font-size: xx-large;
+    display: block;
+    color: #0F8243;
+	margin-top: 12px;
+}
 .pbox {
 	margin-bottom: 0 !important;
+}
+.col-wrap {
+	/* delete before florence */
+ 	margin-left: 20% !important;
 }
   </style>
