@@ -11,7 +11,7 @@
 	.st5{fill:none;stroke:#6360A5;stroke-width:8;stroke-miterlimit:10;}
 	.st6{fill:#3C388E;}
 	.st7{fill:none;stroke:#6360A5;stroke-width:4;stroke-miterlimit:10;}
-	.st8{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st8{fill:none;stroke:#000000;stroke-miterlimit:10;} -->
 	.st9{fill:none;stroke:#4D4D4D;stroke-width:2;stroke-miterlimit:10;}
 	.st10{fill:#206095; stroke:none}
 	.st11{fill:#99B1BC;}
@@ -21,7 +21,7 @@
 	.st15{fill:#0F8243;}
 	.st16{fill:#FFFFFF;}
 	.st17{fill:#787878;}
-	.st18{fill:none;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;}
+	<!-- .st18{fill:none;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;} -->
 </style>
 <g id="Circle" class="st0">
 </g>
