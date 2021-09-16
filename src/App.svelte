@@ -264,7 +264,7 @@
 							<div class="blockFlex">
 								<div class="input-group">
 									<label class="visuallyhidden" for="shareInput">Enter the number of people you share your commute with</label>
-									<input style="width: 60px;" id="shareInput" type=number step="0.5" min=0 max=4 bind:value={share}>
+									<input style="width: 65px;" id="shareInput" type=number step="0.5" min=0 max=4 bind:value={share}>
 								</div>
 							</div>
 						{/if}
@@ -441,18 +441,18 @@
 								{@html CO2ePic}
 							</div>
 							<p class="pbox">
-								Based on DEFRA's conversion factors, the property's heating system emits about {Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2e each year. For each hour the heating is on, this is about <strong class="strongblue">{Math.round(1000*(heatCost*homeFuelConv[selFuel][1])/2618)} grams of CO2e</strong>
+								Based on DEFRA's conversion factors, the property's heating system emits about {Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2e each year. <strong>For each hour</strong> the heating is on, this is about <strong class="strongblue">{Math.round(1000*(heatCost*homeFuelConv[selFuel][1])/2618)} grams of CO2e</strong>
 							</p>
 						</div>
 					</div>
 				{:else}
-					<div class="grey-box">
+					<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
 						<div style="width:100px; margin-right: 10px;">
 							{@html CO2ePic}
 						</div>
 						<div>
 							<p style="margin-bottom:0px !important">
-								The average UK home emits about 2,349 kg CO2e on heating each year. This is approximately <strong>897 grams of CO2e</strong> for each hour the heating is switched on
+								The average UK home emits about 2,349 kg CO2e on heating each year. <strong>For each hour</strong> the heating is switched on, this is approximately <strong class="strongblue">897 grams of CO2e</strong> 
 							</p>
 						</div>
 					</div>
@@ -464,7 +464,7 @@
 			<div class="blockFlex">
 				<div class="input-group">
 					<label class="visuallyhidden" for="shareInput">Enter the number of people you share your home with during the day</label>
-					<input style="width: 60px;" id="shareInput" type=number step="0.5" min=0 max=12 bind:value={share2}>
+					<input style="width: 65px;" id="shareInput" type=number step="0.5" min=0 max=12 bind:value={share2}>
 				</div>
 			</div>
 
@@ -572,16 +572,16 @@
 		  <br>
 		  <div class="section__content--markdown">
 			<section>
-				<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px; ">
+				<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
 					<div>
-						<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100)}%</strong> of the total emissions of the average person in the UK</p>
+						<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
 					</div>
 					<div style="width:100px; margin-right: 10px;">
 						{@html CO2ePic}
 					</div>
 				</div>
-
-			  <p>Heating only the room you are working in, working at local hubs, and seasonal commuting patterns could all prove to be environmentally friendly options for the future of work.</p>
+<br>
+<br>
 			</section>
 		  </div>
 		</article> 
