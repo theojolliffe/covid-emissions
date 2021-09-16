@@ -143,6 +143,7 @@
 						<header>
 							<h3>The commute</h3>
 						</header>
+						<br>
 						<div style="display:grid !important">
 							<form style="float:left">
 								<p style="float:left; margin: 0px 50px 0px 0px;">How do you travel to work?</p>
@@ -194,6 +195,8 @@
 							</div>
 							{/if}
 						{/if}
+						<br>
+						<br>
 						<div class="grid-cont">
 							<div class="grid-box" aria-live="assertive">
 								<div style="width:80px">
@@ -255,10 +258,12 @@
 						{#if input[2].answerChoice=="Electric Vehicle"}
 							<p>Although electric vehicles do not directly emit any greenhouse gas, the electricity they run on has an associated carbon cost.</p>
 						{/if}
+						<br>
 						<p><strong>How far is your daily round commute?</strong></p>
 						<div id="slide-cont">
 							<RangeSlider bind:values={comLength} min=0 max={(input[0].answerChoice=="Cycle")?40:(input[0].answerChoice=="Walk")?20:200} float suffix=" miles" step={0.1} springValues={{ stiffness: 0.3, damping: 0.7 }}/>
 						</div>
+						<br>
 						{#if input[0].answerChoice=="Car"}
 							<p style="float:left; margin: 0px 50px 0px 0px;">On average, how many others do you commute with?</p>
 							<div class="blockFlex">
@@ -275,6 +280,7 @@
 								<input id="wfhDpW" type=number step="1" min=0 max=5 bind:value={wfhDpW} on:input={enforceMinMax(wfhDpW, 0, 5, 'wfhDays')} >
 							</div>
 						</div>
+						<br>
 						{#if limit=="wfhDays"}
 							<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;">
 								Please enter a value between 0 and 5.
@@ -386,8 +392,6 @@
 						</select>
 					</form>
 				{/if}
-
-
 				<div aria-live="assertive">
 					<button id="accord" on:click={toggle2} aria-expanded={isOpen2}><svg style="tran"  width="20" height="20" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg>Address not listed? Manually enter details about your heating</button>
 					{#if isOpen2}
@@ -412,6 +416,9 @@
 							</div>
 						</div>
 					{/if}
+					<br>
+					<br>
+
 					{#if addressSelected}
 						<div class="grey-box">
 							<div class="icon" style="width:100px; margin-right: 10px;">
@@ -459,6 +466,7 @@
 					<br>
 				{/if}
 			</div>
+			<br>
 
 			<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you ussually work from home with?</p>
 			<div class="blockFlex">
@@ -467,7 +475,6 @@
 					<input style="width: 65px;" id="shareInput" type=number step="0.5" min=0 max=12 bind:value={share2}>
 				</div>
 			</div>
-
 
 			<p><strong>How many extra hours will you heat your house while working from home?</strong></p>
 			<div id="slide-cont">
@@ -479,6 +486,8 @@
 				<p>
 					Heating your home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)*10)/10} kg CO2e per home working day</strong> during the heating season.
 				</p>
+				<br>
+				<br>
 
 				<div class="grid-cont">
 
@@ -523,7 +532,7 @@
 				<p>
 					Heating the average home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*897)/1000)*10)/10} kg CO2e per home working day</strong> during the heating season.
 				</p>
-
+				<br>
 
 				<div class="grid-cont">
 
