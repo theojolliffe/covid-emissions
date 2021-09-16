@@ -361,245 +361,200 @@
 				</div>
 				<br>
 				<br>
-		<div class="section__content--markdown">
-			<section>
-			  <h3>The remote workplace</h3>
-			  <p>For some home workers, the emissions saved on commuting may be lost to heating their home while their usual place of work is run at reduced capacity.</p>
-			  <p>The amount of time remote workers choose to heat their home will be crucial in determining their household emissions.</p>
-			  <p><strong>How much CO2e is produced by your home's heating system?</strong></p>
-				<div>
-					<div class="input-group">
-						<label class="visuallyhidden" for="postcodeInput">Enter a full English or Welsh postcode</label>
-						<input id="postcodeInput" class="typedInput" bind:value={postCode} placeholder="Enter a postcode (England or Wales)">
-						<button id="postcodeSearch" on:click={searchPC(postCode)}>
-							Search
-						</button>
-					</div>
-				</div>
-				{#if loadEr}
-					<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px;">
-						<p><strong>Please enter a full valid post code.</strong></p>
-					</div>
-				{/if}
-				{#if searched}
-					<form class="addressForm">
-						<select class="addressSelect" id="select4" bind:value={selectAd} on:blur={addressSel} on:change={addressSel}>
-							<option value="" disabled selected>
-								Select an address
-							</option>
-							{#each epcData as epc}
-								<option value={epc}>
-									{epc.address}
-								</option>
-							{/each}
-						</select>
-					</form>
-				{/if}
-				<div aria-live="assertive">
-					<button id="accord" on:click={toggle2} aria-expanded={isOpen2}><svg style="tran"  width="20" height="20" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg>Address not listed? Manually enter details about your heating</button>
-					{#if isOpen2}
-						<div transition:slide={{ duration: 300 }}>
-							<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If there is no publicly avaiable data for your address consider looking at a nearby property of similar size.</p>
-								<button id="cavBut" on:click={addUsage}>Or manually enter your heating costs</button>
-								{#if usage}
-									<div class="input-group">
-										<label class="visuallyhidden" for="costOfHeat">Enter your average annual heating costs</label>
-										<input id="costOfHeat" class="typedInput" bind:value={manualHeat} placeholder="Average annual cost of heating (GBP)">
-										<button id="cavBut" on:click={searchManHeat(manualHeat)}>Search</button>
-									</div>
-									<p style="float:left; margin: 0px 50px 0px 0px;">How is your heat generated?</p>
-									<select class="addressSelect" id="select1" bind:value={input[4].answerChoice} on:change={heatType}>
-										{#each input[4].answers as question}
-											<option selected={question.selected} value={question.text}>
-												{homeFuelConv[question.text][0]}
-											</option>
-										{/each}
-									</select>
-								{/if}
+				<div class="section__content--markdown">
+					<section>
+					<h3>The remote workplace</h3>
+					<p>For some home workers, the emissions saved on commuting may be lost to heating their home while their usual place of work is run at reduced capacity.</p>
+					<p>The amount of time remote workers choose to heat their home will be crucial in determining their household emissions.</p>
+					<p><strong>How much CO2e is produced by your home's heating system?</strong></p>
+
+						<div aria-live="assertive">
+							<div class="input-group">
+								<label class="visuallyhidden" for="costOfHeat">Enter your average annual heating costs</label>
+								<input id="costOfHeat" class="typedInput" bind:value={manualHeat} placeholder="Average annual cost of heating (GBP)">
+								<button id="cavBut" on:click={searchManHeat(manualHeat)}>Search</button>
 							</div>
-						</div>
-					{/if}
-					<br>
+							<p style="float:left; margin: 0px 50px 0px 0px;">How is your heat generated?</p>
+							<select class="addressSelect" id="select1" bind:value={input[4].answerChoice} on:change={heatType}>
+								{#each input[4].answers as question}
+									<option selected={question.selected} value={question.text}>
+										{homeFuelConv[question.text][0]}
+									</option>
+								{/each}
+							</select>
+
+							<br>
+							<br>
+
+							{#if addressSelected}
+								<div class="grey-box">
+									<div class="icon" style="width:100px; margin-right: 10px;">
+										{@html WFHPic}
+									</div>
+									<div>
+										<p style="margin-bottom:0px !important">
+											This <strong>{selectAd['total-floor-area']} m<sup>2</sup></strong> {selectAd['property-type'].toLowerCase()} has <strong>{numLU[selectAd['number-heated-rooms']]} heated rooms</strong> and is <strong>heated using {homeFuelConv[selFuel][0].toLowerCase()}</strong>, according to <a href="https://epc.opendatacommunities.org/" target=”_blank”>Energy Performance of Buildings data</a>
+										</p>
+									</div>
+								</div>
+								<br>
+							{/if}
+						{#if addressSelected | (manualHeatEnt>0)}
+							<div class="grid-cont">
+								<div class="grid-box" aria-live="assertive">
+									<div style="width:90px">
+										{@html moneyPic}
+									</div>
+									<p class="pbox">
+										Based on the Standard Assessment Procedure's (SAP) estimate of 2,618 heating hours per year at about 21°C, heating this property costs approximately <strong class="strongblue">£{heatCost} per year</strong>
+									</p>
+								</div>
+								<br class="box-break">
+								<div class="grid-box" aria-live="assertive">
+									<div style="width:90px">
+										{@html CO2ePic}
+									</div>
+									<p class="pbox">
+										Based on DEFRA's conversion factors, the property's heating system emits about {Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2e each year. <strong>For each hour</strong> the heating is on, this is about <strong class="strongblue">{Math.round(1000*(heatCost*homeFuelConv[selFuel][1])/2618)} grams of CO2e</strong>
+									</p>
+								</div>
+							</div>
+						{:else}
+							<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
+								<div style="width:100px; margin-right: 10px;">
+									{@html CO2ePic}
+								</div>
+								<div>
+									<p style="margin-bottom:0px !important">
+										The average UK home emits about 2,349 kg CO2e on heating each year. <strong>For each hour</strong> the heating is switched on, this is approximately <strong class="strongblue">897 grams of CO2e</strong> 
+									</p>
+								</div>
+							</div>
+							<br>
+						{/if}
+					</div>
 					<br>
 
-					{#if addressSelected}
-						<div class="grey-box">
-							<div class="icon" style="width:100px; margin-right: 10px;">
-								{@html WFHPic}
+					<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you ussually work from home with?</p>
+					<div class="blockFlex">
+						<div class="input-group">
+							<label class="visuallyhidden" for="shareInput">Enter the number of people you share your home with during the day</label>
+							<input style="width: 65px;" id="shareInput" type=number step="0.5" min=0 max=12 bind:value={share2}>
+						</div>
+					</div>
+
+					<p><strong>How many extra hours will you heat your house while working from home?</strong></p>
+					<div id="slide-cont">
+						<RangeSlider bind:values={hoursHeated} min=0 max={24} float suffix=" hours per day" step={0.5} springValues={{ stiffness: 0.3, damping: 0.9 }}/>
+					</div>
+
+					{#if addressSelected | (manualHeatEnt>0)}
+
+						<p>
+							Heating your home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)*10)/10} kg CO2e per home working day</strong> during the heating season.
+						</p>
+						<br>
+						<br>
+
+						<div class="grid-cont">
+
+							<div class="grid-box" aria-live="assertive">
+								<div style="width:90px">
+									{@html tempPic}
+								</div>
+								<p class="pbox">
+									Considering SAP's heating season of 34 weeks, working from home {numLU[wfhDays]} day{plural(wfhDays)} per week, for each person your heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618))/(share2+1))} kg CO2e per year</strong>
+								</p>
 							</div>
-							<div>
-								<p style="margin-bottom:0px !important">
-									This <strong>{selectAd['total-floor-area']} m<sup>2</sup></strong> {selectAd['property-type'].toLowerCase()} has <strong>{numLU[selectAd['number-heated-rooms']]} heated rooms</strong> and is <strong>heated using {homeFuelConv[selFuel][0].toLowerCase()}</strong>, according to <a href="https://epc.opendatacommunities.org/" target=”_blank”>Energy Performance of Buildings data</a>
+
+							<br class="box-break">
+
+							<div class="grid-box" aria-live="assertive">
+								<div style="width:90px">
+									{@html CO2ePic}
+								</div>
+								<p class="pbox">
+									Accounting for the emissions saved on your commute minus the additional emissions from heating your home, you will <strong class="strongblue">{((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm)>0?"emit an extra":"save about"} {Math.round(Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))} kg CO2e per year</strong>
 								</p>
 							</div>
 						</div>
-						<br>
-					{/if}
-				{#if addressSelected | (manualHeatEnt>0)}
-					<div class="grid-cont">
-						<div class="grid-box" aria-live="assertive">
-							<div style="width:90px">
-								{@html moneyPic}
+
+						<div aria-live="assertive">
+							<div class = "green">
+								<div class="icon" style="width:100px; padding-top: 15px;
+								margin-left: -10px;
+								margin-right: 10px;">
+									{@html treePic2}
+								</div>
+								<div>
+									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{
+									((Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))/22).toFixed(0)
+									} trees</strong>
+									</p>
+								</div>
 							</div>
-							<p class="pbox">
-								Based on the Standard Assessment Procedure's (SAP) estimate of 2,618 heating hours per year at about 21°C, heating this property costs approximately <strong class="strongblue">£{heatCost} per year</strong>
-							</p>
 						</div>
-						<br class="box-break">
-						<div class="grid-box" aria-live="assertive">
-							<div style="width:90px">
+
+					{:else}
+						<p>
+							Heating the average home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*897)/1000)*10)/10} kg CO2e per home working day</strong> during the heating season.
+						</p>
+						<br>
+
+						<div class="grid-cont">
+
+							<div class="grid-box" aria-live="assertive">
+								<div style="width:90px">
+									{@html tempPic}
+								</div>
+								<p class="pbox">
+									Considering SAP's heating season of 34 weeks, working from home {numLU[wfhDays]} day{plural(wfhDays)} per week, an average heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))*10)/10} kg CO2e per year for each person</strong>
+								</p>
+							</div>
+							<br class="box-break">
+							<div class="grid-box" aria-live="assertive">
+								<div style="width:90px">
+									{@html CO2ePic}
+								</div>
+								<p class="pbox">
+									Accounting for the emissions saved on your commute minus the additional emissions from heating your home, you will <strong class="strongblue">{((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)>0?"emit an extra":"save about"} {Math.round(Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))} kg CO2e per year</strong>
+								</p>
+							</div>
+						</div>
+						<div aria-live="assertive">
+							<div class = "green">
+								<div class="icon" style="width:100px; padding-top: 15px;
+								margin-left: -10px;
+								margin-right: 10px;">
+									{@html treePic2}
+								</div>
+								<div>
+									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} trees</strong></p>
+								</div>
+							</div>
+						</div>
+					{/if}
+					</section>
+				</div>
+				<br>
+				<div class="section__content--markdown">
+					<section>
+						<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
+							<div>
+								<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
+							</div>
+							<div style="width:100px; margin-right: 10px;">
 								{@html CO2ePic}
 							</div>
-							<p class="pbox">
-								Based on DEFRA's conversion factors, the property's heating system emits about {Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2e each year. <strong>For each hour</strong> the heating is on, this is about <strong class="strongblue">{Math.round(1000*(heatCost*homeFuelConv[selFuel][1])/2618)} grams of CO2e</strong>
-							</p>
 						</div>
-					</div>
-				{:else}
-					<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
-						<div style="width:100px; margin-right: 10px;">
-							{@html CO2ePic}
-						</div>
-						<div>
-							<p style="margin-bottom:0px !important">
-								The average UK home emits about 2,349 kg CO2e on heating each year. <strong>For each hour</strong> the heating is switched on, this is approximately <strong class="strongblue">897 grams of CO2e</strong> 
-							</p>
-						</div>
-					</div>
-					<br>
-				{/if}
-			</div>
-			<br>
-
-			<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you ussually work from home with?</p>
-			<div class="blockFlex">
-				<div class="input-group">
-					<label class="visuallyhidden" for="shareInput">Enter the number of people you share your home with during the day</label>
-					<input style="width: 65px;" id="shareInput" type=number step="0.5" min=0 max=12 bind:value={share2}>
+						<br>
+						<br>
+					</section>
 				</div>
-			</div>
-
-			<p><strong>How many extra hours will you heat your house while working from home?</strong></p>
-			<div id="slide-cont">
-				<RangeSlider bind:values={hoursHeated} min=0 max={24} float suffix=" hours per day" step={0.5} springValues={{ stiffness: 0.3, damping: 0.9 }}/>
-			</div>
-
-			{#if addressSelected | (manualHeatEnt>0)}
-
-				<p>
-					Heating your home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)*10)/10} kg CO2e per home working day</strong> during the heating season.
-				</p>
-				<br>
-				<br>
-
-				<div class="grid-cont">
-
-					<div class="grid-box" aria-live="assertive">
-						<div style="width:90px">
-							{@html tempPic}
-						</div>
-						<p class="pbox">
-							Considering SAP's heating season of 34 weeks, working from home {numLU[wfhDays]} day{plural(wfhDays)} per week, for each person your heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618))/(share2+1))} kg CO2e per year</strong>
-						</p>
-					</div>
-
-					<br class="box-break">
-
-					<div class="grid-box" aria-live="assertive">
-						<div style="width:90px">
-							{@html CO2ePic}
-						</div>
-						<p class="pbox">
-							Accounting for the emissions saved on your commute minus the additional emissions from heating your home, you will <strong class="strongblue">{((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm)>0?"emit an extra":"save about"} {Math.round(Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))} kg CO2e per year</strong>
-						</p>
-					</div>
-				</div>
-
-				<div aria-live="assertive">
-					<div class = "green">
-						<div class="icon" style="width:100px; padding-top: 15px;
-						margin-left: -10px;
-						margin-right: 10px;">
-							{@html treePic2}
-						</div>
-						<div>
-							<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{
-							((Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))/22).toFixed(0)
-							} trees</strong>
-							</p>
-						</div>
-					</div>
-				</div>
-
-			{:else}
-				<p>
-					Heating the average home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*897)/1000)*10)/10} kg CO2e per home working day</strong> during the heating season.
-				</p>
-				<br>
-
-				<div class="grid-cont">
-
-					<div class="grid-box" aria-live="assertive">
-
-						<div style="width:90px">
-							{@html tempPic}
-						</div>
-						<p class="pbox">
-							Considering SAP's heating season of 34 weeks, working from home {numLU[wfhDays]} day{plural(wfhDays)} per week, an average heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))*10)/10} kg CO2e per year for each person</strong>
-						</p>
-
-					</div>
-
-					<br class="box-break">
-
-					<div class="grid-box" aria-live="assertive">
-
-						<div style="width:90px">
-							{@html CO2ePic}
-						</div>
-						<p class="pbox">
-							Accounting for the emissions saved on your commute minus the additional emissions from heating your home, you will <strong class="strongblue">{((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)>0?"emit an extra":"save about"} {Math.round(Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))} kg CO2e per year</strong>
-
-						</p>
-
-					</div>
-
-				</div>
-
-				<div aria-live="assertive">
-					<div class = "green">
-						<div class="icon" style="width:100px; padding-top: 15px;
-						margin-left: -10px;
-						margin-right: 10px;">
-							{@html treePic2}
-						</div>
-						<div>
-							<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} trees</strong></p>
-						</div>
-					</div>
-				</div>
-			{/if}
-			</section>
-		  </div>
-		  <br>
-		  <div class="section__content--markdown">
-			<section>
-				<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
-					<div>
-						<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
-					</div>
-					<div style="width:100px; margin-right: 10px;">
-						{@html CO2ePic}
-					</div>
-				</div>
-<br>
-<br>
-			</section>
-		  </div>
-		</article> 
-	  </div>
+			</article> 
+		</div>
 	</div>
-  </main>
+</main>
 
   <style>
 	* {
