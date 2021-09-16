@@ -18,12 +18,13 @@
 	const toggle = () => isOpen = !isOpen
 	let isOpen2 = false
 	const toggle2 = () => isOpen2 = !isOpen2
+
 	function searchPC(pCode) {
 		let url = "https://epc.opendatacommunities.org/api/v1/domestic/search?postcode=" + pCode.replace(/\s/g, '')
 		fetch(url, { 
 			method: 'get', 
 			headers: new Headers({
-				"Authorization": "Basic dGhlb2pvbGxpZmZlQGdtYWlsLmNvbTpjOTFlMWEzMzRjNTk4NDg0MTlmYTdjYTkwM2I5ZTdkOGQxMjJiMWU3",
+				"Authorization": "Basic "+ab+bc+cd,
 				"Accept": "application/json",
 			}),
 		})
@@ -131,7 +132,9 @@
 	$: calorieComm = km*((input[0].answerChoice=="Walk")?47:input[0].answerChoice=="Cycle"?28:null)
 	$: caloriesYear = Math.round(46*wfhDays*calorieComm)
 	$: yearSaving = (input[0].answerChoice=="Walk"|input[0].answerChoice=="Cycle")?(caloriesYear*dietLU[input[3].answerChoice]/2000):(46*wfhDays*(vehConsump*comLength))/(share+1);
-
+	let ab = "dGhlb2pvbGxpZmZlQGdtYWlsLm"
+	let bc = "NvbTpjOTFlMWEzMzRjNTk4NDg0MTlm"
+	let cd = "YTdjYTkwM2I5ZTdkOGQxMjJiMWU3"
 
 </script>
 <main>
