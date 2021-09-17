@@ -873,10 +873,10 @@ svg { transition: transform 0.2s ease-in;
 .pbox {
 	margin-bottom: 0 !important;
 }
-.col-wrap {
-	/* delete before florence */
+/* .col-wrap {
+	delete before florence
  	margin-left: 20% !important;
-}
+} */
 .box-break {
 	display: none
 }
