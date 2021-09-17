@@ -504,8 +504,6 @@
 								{@html CO2ePic}
 							</div>
 						</div>
-						<br>
-						<br>
 					</section>
 				</div>
 			</article> 
