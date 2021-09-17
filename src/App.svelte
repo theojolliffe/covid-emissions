@@ -436,6 +436,17 @@
 							</div>
 						</div>
 
+								<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
+									<div>
+										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
+									</div>
+									<div style="width:100px; margin-right: 10px;">
+										{@html CO2ePic}
+									</div>
+								</div>
+								<br>
+
+
 						<div aria-live="assertive">
 							<div class = "green">
 								<div class="icon" style="width:100px; padding-top: 15px;
@@ -478,6 +489,17 @@
 								</p>
 							</div>
 						</div>
+
+								<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
+									<div>
+										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
+									</div>
+									<div style="width:100px; margin-right: 10px;">
+										{@html CO2ePic}
+									</div>
+								</div>
+								<br>
+
 						<div aria-live="assertive">
 							<div class = "green">
 								<div class="icon" style="width:100px; padding-top: 15px;
@@ -494,18 +516,6 @@
 					</section>
 				</div>
 				<br>
-				<div class="section__content--markdown">
-					<section>
-						<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
-							<div>
-								<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
-							</div>
-							<div style="width:100px; margin-right: 10px;">
-								{@html CO2ePic}
-							</div>
-						</div>
-					</section>
-				</div>
 			</article> 
 		</div>
 	</div>
