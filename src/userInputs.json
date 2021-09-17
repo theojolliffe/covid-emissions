@@ -119,9 +119,7 @@
             {"id": "5d", "text": "Electricity", "selected": ""},
             {"id": "5d", "text": "Gas", "selected": "selected"},
             {"id": "5d", "text": "Coal and coke", "selected": ""},
-            {"id": "5d", "text": "Oil for central heating", "selected": ""},
-            {"id": "5d", "text": "Paraffin etc", "selected": ""},
-            {"id": "5d", "text": "No data", "selected": ""}
+            {"id": "5d", "text": "Oil for central heating", "selected": ""}
         ],
         "answerChoice": "Gas"
     }

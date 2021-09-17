@@ -2,7 +2,5 @@
     "Electricity": ["Electricity", 2.249],
     "Gas": ["Gas", 6.966],
     "Coal and coke": ["Coal", 0.528],
-    "Oil for central heating":  ["Oil", 0.528],
-    "Paraffin etc":  ["Liquefied petroleum gas", 0.528],
-    "No data": ["Other", null]
+    "Oil for central heating":  ["Oil", 0.528]
 }

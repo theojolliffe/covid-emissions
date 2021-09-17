@@ -16,39 +16,9 @@
 	import { slide } from "svelte/transition";
 	let isOpen = false
 	const toggle = () => isOpen = !isOpen
-	let isOpen2 = false
-	const toggle2 = () => isOpen2 = !isOpen2
 
-	function searchPC(pCode) {
-		let url = "https://epc.opendatacommunities.org/api/v1/domestic/search?postcode=" + pCode.replace(/\s/g, '')
-		fetch(url, { 
-			method: 'get', 
-			headers: new Headers({
-				"Authorization": "Basic "+ab+bc+cd,
-				"Accept": "application/json",
-			}),
-		})
-		.then((response) => {
-		if (response.ok) {
-			return response.json();
-		} else {
-			throw new Error('Something went wrong');
-		}
-		})
-		.then(data => {
-			loadEr = false;
-			epcData = data.rows
-			searched = true;
-		})
-		.catch((error) => {
-			loadEr = true
-			console.log(error)
-		});
-  	}
 	let manualVeh;
 	let selectAd;
-	let epcData;
-	let postCode = '';
 	let input = UInputs.results;
 	let share = 0;
 	let share2 = 1;
@@ -57,10 +27,7 @@
 	let wfhDays=1;
 	let limit = null
 	let commMethod = false;
-	let usage = false;
-	let searched = false;
 	let addressSelected = false;
-	let loadEr = false;
 	let comLU = {Walk: 1.8, Cycle: 6.8, Bus: 12.7, Train: 47, 'London Underground': 18.6, Motorbike: 18, Car: 20.9}
 	let dietLU = {"High meat eater": 7.26, "Medium meat eater": 5.66, "Low meat eater": 4.67, "Pescatarian": 3.94, "Vegetarian": 3.85, "Vegan": 2.94}
 	let comLength = [comLU[input[0].answerChoice]];
@@ -75,7 +42,6 @@
 
 	function plural(share) { return share==1?"":"s";}
 	function addMethod() { commMethod = !commMethod }
-	function addUsage() { usage = !usage }
 	let manualHeat = null;
 	let manualHeatEnt = null;
 	let manualAuto = 'auto'
@@ -97,22 +63,6 @@
 	}
 	let autoSelFuel
 	$:selFuel = (manualAutoType=='manual')?input[4].answerChoice:(manualAutoType=='auto')?autoSelFuel:"Gas";
-	function addressSel() {
-		console.log("II")
-		manualAutoType = 'auto'
-		addressSelected = true;
-		let gas = ["Gas: mains", "mains gas "]
-		let elec = ["Electricity", "electricity"]
-		let coal = ["Solid fuel: house coal", "house coal (not community)", "smokeless coal"]
-		let oil = ["Oil", "oil"]
-		let paraffin = ["Gas: bulk", "LPG (comm", "LPG (not ", "LPG - thi", "bottled L"]
-		if (gas.includes(selectAd['main-fuel'].slice(0,10))) { autoSelFuel = "Gas" }
-		else if (elec.includes(selectAd['main-fuel'].slice(0,11))) { autoSelFuel = "Electricity" }
-		else if (coal.includes(selectAd['main-fuel'])) { autoSelFuel = "Coal and coke" }
-		else if (oil.includes(selectAd['main-fuel'].slice(0,3))) { autoSelFuel = "Oil for central heating" }
-		else if (paraffin.includes(selectAd['main-fuel'].slice(0,9))) { autoSelFuel = "Paraffin etc" }
-		else { autoSelFuel = "No data" }
-	}
 	function searchManVeh(manualVeh) { vehConsump = manualVeh/1000 }
 	function comLengthFunc() { comLength = [comLU[input[0].answerChoice]] }
 	function enforceMinMax(v, min, max, topic) {
@@ -132,9 +82,6 @@
 	$: calorieComm = km*((input[0].answerChoice=="Walk")?47:input[0].answerChoice=="Cycle"?28:null)
 	$: caloriesYear = Math.round(46*wfhDays*calorieComm)
 	$: yearSaving = (input[0].answerChoice=="Walk"|input[0].answerChoice=="Cycle")?(caloriesYear*dietLU[input[3].answerChoice]/2000):(46*wfhDays*(vehConsump*comLength))/(share+1);
-	let ab = "dGhlb2pvbGxpZmZlQGdtYWlsLm"
-	let bc = "NvbTpjOTFlMWEzMzRjNTk4NDg0MTlm"
-	let cd = "YTdjYTkwM2I5ZTdkOGQxMjJiMWU3"
 
 </script>
 <main>
@@ -149,15 +96,18 @@
 						<br>
 						<div style="display:grid !important">
 							<form style="float:left">
+								<label>
 								<p style="float:left; margin: 0px 50px 0px 0px;">How do you travel to work?</p>
-								<select class="addressSelect" id="select1" bind:value={input[0].answerChoice} on:change={comLengthFunc}>
+								<select class="addressSelect" id="select1c" bind:value={input[0].answerChoice} on:change={comLengthFunc}>
 									{#each input[0].answers as question}
 										<option selected={question.selected} value={question.text}>
 											{question.text}
 										</option>
 									{/each}
 								</select>
+								</label>
 								{#if input[0].answerChoice=="Car"}
+									<label>
 									<p style="float:left; margin: 0px 50px 0px 0px;">What kind of car do you drive?</p>
 									<select class="addressSelect" id="select2" bind:value={input[1].answerChoice}>
 										{#each input[1].answers as question}
@@ -166,9 +116,11 @@
 											</option>
 										{/each}
 									</select>
+									</label>
 								{#if (input[1].answerChoice!="Not sure")}
 									<p style="display: inline-block; width: 100%;">For example, <i>{carTypeLookup[input[1].answerChoice][0]}</i> or <i>{carTypeLookup[input[1].answerChoice][1]}</i></p>
 								{/if}
+									<label>
 									<p style="float:left; margin: 0px 50px 0px 0px;">What's the fuel type?</p>
 									<select class="addressSelect" id="select3" bind:value={input[2].answerChoice}>
 										{#each input[2].answers[input[1].answerChoice] as question}
@@ -177,6 +129,7 @@
 											</option>
 										{/each}
 									</select>
+									</label>
 								{/if}
 							</form>
 						</div>
@@ -184,12 +137,12 @@
 							<button id="accord" on:click={toggle} aria-expanded={isOpen}><svg style="tran"  width="20" height="20" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg> {"Vehicle not listed? Manually enter your fuel consumption rate"}</button>
 							{#if isOpen}
 							<div transition:slide={{ duration: 300 }}>
-								<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><p>The <a href="https://carfueldata.vehicle-certification-agency.gov.uk" target=”_blank”>Vehicle Certification Agency</a> has information about the fuel consumption rate of different vehicles.</p><button id="cavBut" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
+								<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><p>The <a href="https://carfueldata.vehicle-certification-agency.gov.uk" target=”_blank”>Vehicle Certification Agency</a> has information about the fuel consumption rate of different vehicles.</p><button id="cavButb" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
 									{#if commMethod}
 										<div class="input-group">
 											<label class="visuallyhidden" for="fuelInput">Enter your vehicle's fuel consumption rate</label>
 											<input class="typedInput" id="fuelInput" bind:value={manualVeh} placeholder="Grams of CO2e per mile">
-											<button id="cavBut" on:click={searchManVeh(manualVeh)}>
+											<button id="cavButc" on:click={searchManVeh(manualVeh)}>
 												Enter
 											</button>
 										</div>
@@ -264,7 +217,7 @@
 						<br>
 						<p><strong>How far is your daily round commute?</strong></p>
 						<div id="slide-cont">
-							<RangeSlider bind:values={comLength} min=0 max={(input[0].answerChoice=="Cycle")?40:(input[0].answerChoice=="Walk")?20:200} float suffix=" miles" step={0.1} springValues={{ stiffness: 0.3, damping: 0.7 }}/>
+							<RangeSlider bind:values={comLength} min=0 max={(input[0].answerChoice=="Cycle")?40:(input[0].answerChoice=="Walk")?20:200} float suffix=" miles" step={(input[0].answerChoice=="Cycle"|input[0].answerChoice=="Walk")?0.1:1} springValues={{ stiffness: 0.3, damping: 0.7 }}/>
 						</div>
 						<br>
 						{#if input[0].answerChoice=="Car"}
@@ -318,20 +271,21 @@
 										{@html elecPic}
 									</div>
 									<p>
-										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, in a typical year of 46 working weeks you will need approximately <strong class="strongblue">{caloriesYear.toLocaleString()} fewer calories</strong>
+										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a year with 46 working weeks, you will need approximately <strong class="strongblue">{caloriesYear.toLocaleString()} fewer calories</strong>
 									</p>
 								{:else}
 									<div style="width:80px">
 										{@html CO2ePic}
 									</div>
 									<p class="pbox">
-										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a 46 working week year you will save <strong class="strongblue">{Math.round(yearSaving*10)/10} kg CO2e</strong>
+										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a year with 46 working weeks, you will save <strong class="strongblue">{Math.round(yearSaving*10)/10} kg CO2e</strong>
 									</p>
 								{/if}
 							</div>
 						</div>
 
 						{#if (input[0].answerChoice=="Walk" | input[0].answerChoice=="Cycle")}
+							<label>
 							<p style="float:left; margin: 0px 50px 0px 0px;">How would you describe your diet?</p>
 							<select class="addressSelect" id="select1" bind:value={input[3].answerChoice} on:change={comLengthFunc}>
 							{#each input[3].answers as question}
@@ -340,6 +294,7 @@
 								</option>
 							{/each}
 							</select>
+							</label>
 							<p>
 								On a {input[3].answerChoice.toLowerCase()} diet, about <strong>{Math.round((yearSaving)*10)/10} kg CO2e</strong> would be emitted during the production of {caloriesYear.toLocaleString()} calories worth of food.
 							</p>
@@ -372,16 +327,18 @@
 							<div class="input-group">
 								<label class="visuallyhidden" for="costOfHeat">Enter your average annual heating costs</label>
 								<input id="costOfHeat" class="typedInput" bind:value={manualHeat} placeholder="Average annual cost of heating (GBP)">
-								<button id="cavBut" on:click={searchManHeat(manualHeat)}>Search</button>
+								<button id="cavBut" on:click={searchManHeat(manualHeat)}>Enter</button>
 							</div>
+							<label>
 							<p style="float:left; margin: 0px 50px 0px 0px;">How is your heat generated?</p>
-							<select class="addressSelect" id="select1" bind:value={input[4].answerChoice} on:change={heatType}>
+							<select class="addressSelect" id="select1b" bind:value={input[4].answerChoice} on:change={heatType}>
 								{#each input[4].answers as question}
 									<option selected={question.selected} value={question.text}>
 										{homeFuelConv[question.text][0]}
 									</option>
 								{/each}
 							</select>
+							</label>
 
 							<br>
 							<br>
@@ -400,13 +357,13 @@
 								<br>
 							{/if}
 						{#if addressSelected | (manualHeatEnt>0)}
-							<div class="grid-cont">
+							<div class="grid-cont" style="grid-template-columns: 39% 59% !important;">
 								<div class="grid-box" aria-live="assertive">
 									<div style="width:90px">
 										{@html moneyPic}
 									</div>
 									<p class="pbox">
-										Based on the Standard Assessment Procedure's (SAP) estimate of 2,618 heating hours per year at about 21°C, heating this property costs approximately <strong class="strongblue">£{heatCost} per year</strong>
+										Based on DEFRA's conversion factors, <strong>£{heatCost} of heating from {selFuel.toLowerCase()}</strong> emits about <strong class="strongblue">{Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2e</strong>
 									</p>
 								</div>
 								<br class="box-break">
@@ -415,7 +372,7 @@
 										{@html CO2ePic}
 									</div>
 									<p class="pbox">
-										Based on DEFRA's conversion factors, the property's heating system emits about {Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2e each year. <strong>For each hour</strong> the heating is on, this is about <strong class="strongblue">{Math.round(1000*(heatCost*homeFuelConv[selFuel][1])/2618)} grams of CO2e</strong>
+										Based on typical heating hours and an <strong>average temperature of about 21°C</strong>, heating this property emits about <strong class="strongblue">{Math.round(1000*(heatCost*homeFuelConv[selFuel][1])/2618)} grams of CO2e per hour</strong>
 									</p>
 								</div>
 							</div>
@@ -438,13 +395,13 @@
 					<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you ussually work from home with?</p>
 					<div class="blockFlex">
 						<div class="input-group">
-							<label class="visuallyhidden" for="shareInput">Enter the number of people you share your home with during the day</label>
-							<input style="width: 65px;" id="shareInput" type=number step="0.5" min=0 max=12 bind:value={share2}>
+							<label class="visuallyhidden" for="shareInputb">Enter the number of people you share your home with during the day</label>
+							<input style="width: 65px;" id="shareInputb" type=number step="0.5" min=0 max=12 bind:value={share2}>
 						</div>
 					</div>
 
 					<p><strong>How many extra hours will you heat your house while working from home?</strong></p>
-					<div id="slide-cont">
+					<div id="slide-cont2">
 						<RangeSlider bind:values={hoursHeated} min=0 max={24} float suffix=" hours per day" step={0.5} springValues={{ stiffness: 0.3, damping: 0.9 }}/>
 					</div>
 
@@ -463,7 +420,7 @@
 									{@html tempPic}
 								</div>
 								<p class="pbox">
-									Considering SAP's heating season of 34 weeks, working from home {numLU[wfhDays]} day{plural(wfhDays)} per week, for each person your heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618))/(share2+1))} kg CO2e per year</strong>
+									In a typical heating season of 34 weeks, working from home <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, for each person your heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618))/(share2+1))} kg CO2e per year</strong>
 								</p>
 							</div>
 
@@ -489,7 +446,7 @@
 								<div>
 									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{
 									((Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))/22).toFixed(0)
-									} trees</strong>
+									} tree{plural(((Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))/22).toFixed(0))}</strong>
 									</p>
 								</div>
 							</div>
@@ -508,7 +465,7 @@
 									{@html tempPic}
 								</div>
 								<p class="pbox">
-									Considering SAP's heating season of 34 weeks, working from home {numLU[wfhDays]} day{plural(wfhDays)} per week, an average heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))*10)/10} kg CO2e per year for each person</strong>
+									In a typical heating season of 34 weeks, working from home <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, an average heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))*10)/10} kg CO2e per year for each person</strong>
 								</p>
 							</div>
 							<br class="box-break">
@@ -529,7 +486,7 @@
 									{@html treePic2}
 								</div>
 								<div>
-									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} trees</strong></p>
+									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} tree{plural(((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0))}</strong></p>
 								</div>
 							</div>
 						</div>
@@ -681,7 +638,7 @@
       transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
       margin-bottom: 24px;
   }
-  #slide-cont {
+  #slide-cont, #slide-cont2 {
     margin: 34px 0 24px 0;  
 }
   #span-cont {
@@ -816,7 +773,7 @@
    clip: rect(0,0,0,0);
    border: 0;
 }
- #cavBut {
+ #cavBut, #cavButb, #cavButc {
 	 color: #206095 !important;
 	 border-radius: 25px;
 	 padding: 8px 22px;
@@ -824,7 +781,6 @@
 	 background-color: #e9e9e9;
 	 box-shadow: 1px 1px 2px 0px rgb(6 12 55 / 34%);
  }
-
  .green { 
 	 background-color: #E7F2EC; 
 	 border-radius: 5px; 
