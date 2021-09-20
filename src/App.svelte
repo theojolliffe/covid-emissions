@@ -370,7 +370,7 @@
 										{@html moneyPic}
 									</div>
 									<p class="pbox">
-										Based on DEFRA's conversion factors, <strong>£{heatCost} of heating from {selFuel.toLowerCase()}</strong> emits about <strong class="strongblue">{Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2 equivalent</strong>
+										Based on <a href="https://www.gov.uk/government/statistics/uks-carbon-footprint" target=”_blank”>DEFRA's conversion factors</a>, <strong>£{heatCost} of heating from {selFuel.toLowerCase()}</strong> emits about <strong class="strongblue">{Math.round(heatCost*homeFuelConv[selFuel][1]).toLocaleString()} kg CO2 equivalent</strong>
 									</p>
 								</div>
 								<br class="box-break">
@@ -462,7 +462,7 @@
 									{@html treePic2}
 								</div>
 								<div>
-									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{
+									<p style="margin-bottom: 0 !important;"><a href="https://www.eea.europa.eu/articles/forests-health-and-climate-change" target=”_blank”>A mature tree can absorb around 22 kg CO2 per year</a>. Therefore, <strong>{((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{
 									((Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))/22).toFixed(0)
 									} tree{plural(((Math.abs((((34*wfhDays*hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)/(share2+1))-totCommEm))/22).toFixed(0))}</strong>
 									</p>
@@ -515,7 +515,7 @@
 									{@html treePic2}
 								</div>
 								<div>
-									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} tree{plural(((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm))/22).toFixed(0))}</strong></p>
+									<p style="margin-bottom: 0 !important;"><a href="https://www.eea.europa.eu/articles/forests-health-and-climate-change" target=”_blank”>A mature tree can absorb around 22 kg CO2 per year</a>. Therefore, <strong>{((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} tree{plural(((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm))/22).toFixed(0))}</strong></p>
 								</div>
 							</div>
 						</div>
