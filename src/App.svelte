@@ -138,7 +138,7 @@
 							<button id="accord" on:click={toggle} aria-expanded={isOpen}><svg style="tran"  width="20" height="20" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg> {"Vehicle not listed? Manually enter your fuel consumption rate"}</button>
 							{#if isOpen}
 							<div transition:slide={{ duration: 300 }}>
-								<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><p>The <a href="https://carfueldata.vehicle-certification-agency.gov.uk" target=”_blank”>Vehicle Certification Agency</a> has information about the fuel consumption rate of different vehicles.</p><button id="cavButb" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
+								<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><button id="cavButb" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
 									{#if commMethod}
 										<div class="input-group">
 											<label class="visuallyhidden" for="fuelInput">Enter your vehicle's fuel consumption rate</label>
@@ -892,7 +892,7 @@ svg { transition: transform 0.2s ease-in;
 .icon {
 	float:left
 }
-@media (max-width: 767px) {
+@media (max-width: 467px) {
 	.icon {
 		float: none;
 	}
