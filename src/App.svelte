@@ -253,7 +253,7 @@
 									{#if input[0].answerChoice=="Walk"|input[0].answerChoice=="Cycle"}
 										Depending on your speed and various metabolic factors, commuting <strong>{comLength} miles</strong> burns about <strong class="strongblue">{Math.round(calorieComm).toLocaleString()} calories</strong>
 									{:else}
-										Commuting <strong>{comLength} miles</strong>,
+										By commuting <strong>{comLength} miles</strong>,
 										{#if input[0].answerChoice=="Car"}
 											{#if share==0}
 												without sharing your journey,
@@ -272,14 +272,14 @@
 										{@html elecPic}
 									</div>
 									<p>
-										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a year with 46 working weeks, you will need approximately <strong class="strongblue">{caloriesYear.toLocaleString()} fewer calories</strong>
+										By avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a year with 46 working weeks, you will need approximately <strong class="strongblue">{caloriesYear.toLocaleString()} fewer calories</strong>
 									</p>
 								{:else}
 									<div style="width:80px">
 										{@html CO2ePic}
 									</div>
 									<p class="pbox">
-										Avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a year with 46 working weeks, you will save <strong class="strongblue">{Math.round(yearSaving*10)/10} kg CO2 equivalent</strong>
+										By avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a year with 46 working weeks, you will save <strong class="strongblue">{Math.round(yearSaving*10)/10} kg CO2 equivalent</strong>
 									</p>
 								{/if}
 							</div>
@@ -320,7 +320,7 @@
 				<div class="section__content--markdown">
 					<section>
 					<h3>The remote workplace</h3>
-					<p>For some home workers, the emissions saved on commuting may be lost to heating their home while their usual place of work is run at reduced capacity.</p>
+					<p>For some home workers, the emissions saved on commuting may be lost by heating their home while their usual place of work is run at reduced capacity.</p>
 					<p>The amount of time remote workers choose to heat their home will be crucial in determining their household emissions.</p>
 					<p><strong>How much CO2 equivalent is produced by your home's heating system?</strong></p>
 
@@ -384,7 +384,7 @@
 								</div>
 								<div>
 									<p style="margin-bottom:0px !important">
-										The average UK home emits about 2,349 kg CO2 equivalent on heating each year. <strong>For each hour</strong> the heating is switched on, this is approximately <strong class="strongblue">897 grams of CO2 equivalent</strong> 
+										The average UK home emits about 2,806 kg CO2 equivalent on heating each year. <strong>For each hour</strong> the heating is switched on, this is approximately <strong class="strongblue">1072 grams of CO2 equivalent</strong> 
 									</p>
 								</div>
 							</div>
@@ -439,7 +439,7 @@
 
 								<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
 									<div>
-										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
+										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
 									</div>
 									<div style="width:100px; margin-right: 10px;">
 										{@html CO2ePic}
@@ -466,7 +466,7 @@
 
 					{:else}
 						<p>
-							Heating the average home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*897)/1000)*10)/10} kg CO2 equivalent per home working day</strong> during the heating season.
+							Heating the average home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*1072)/1000)*10)/10} kg CO2 equivalent per home working day</strong> during the heating season.
 						</p>
 						<br>
 
@@ -477,7 +477,7 @@
 									{@html tempPic}
 								</div>
 								<p class="pbox">
-									In a typical heating season of 34 weeks, working from home <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, an average heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))*10)/10} kg CO2 equivalent per year for each person</strong>
+									In a typical heating season of 34 weeks, working from home <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, an average heating system would emit an additional <strong class="strongblue">{Math.round((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))*10)/10} kg CO2 equivalent per year for each person</strong>
 								</p>
 							</div>
 							<br class="box-break">
@@ -486,14 +486,14 @@
 									{@html CO2ePic}
 								</div>
 								<p class="pbox">
-									Accounting for the emissions saved on your commute minus the additional emissions from heating your home, you will <strong class="strongblue">{((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)>0?"emit an extra":"save about"} {Math.round(Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))} kg CO2 equivalent per year</strong>
+									Accounting for the emissions saved on your commute minus the additional emissions from heating your home, you will <strong class="strongblue">{((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)>0?"emit an extra":"save about"} {Math.round(Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm))} kg CO2 equivalent per year</strong>
 								</p>
 							</div>
 						</div>
 
 								<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
 									<div>
-										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
+										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
 									</div>
 									<div style="width:100px; margin-right: 10px;">
 										{@html CO2ePic}
@@ -509,7 +509,7 @@
 									{@html treePic2}
 								</div>
 								<div>
-									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} tree{plural(((Math.abs((((34*wfhDays*hoursHeated*897)/1000)/(share2+1))-totCommEm))/22).toFixed(0))}</strong></p>
+									<p style="margin-bottom: 0 !important;">A mature tree can absorb around 22 kg CO2 per year. Therefore, <strong>{((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)>0?"your extra":"your saved"} emissions</strong> would equate to the carbon capture of about <strong class="stronggreen">{((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm))/22).toFixed(0)} tree{plural(((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm))/22).toFixed(0))}</strong></p>
 								</div>
 							</div>
 						</div>
