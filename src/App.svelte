@@ -879,7 +879,7 @@ svg { transition: transform 0.2s ease-in;
 .icon {
 	float:left
 }
-@media (max-width: 567px) {
+@media only screen and (max-width: 767px) {
 	.icon {
 		float: none;
 	}
