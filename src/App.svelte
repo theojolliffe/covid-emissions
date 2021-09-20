@@ -161,9 +161,9 @@
 								</div>
 								<p class="pbox">
 									{#if input[0].answerChoice=="Walk"}
-										Walking to work emits no greenhouse gas, although GHG is emitted producing the food needed for the calories to walk.
+										Walking to work emits no greenhouse gases, although GHG is emitted producing the food needed for the calories to walk.
 									{:else if input[0].answerChoice=="Cycle"}
-										Cycling to work emits no greenhouse gas, although bike manufacturing produces some greenhouse gas, as does producing the food needed for energy to cycle.
+										Cycling to work emits no greenhouse gases, although bike manufacturing produces some greenhouse gases, as does producing the food needed for energy to cycle.
 									{:else if input[0].answerChoice=="Bus"}
 										For each passenger per mile, a bus emits about <strong class="strongblue">{Math.round(102*kmConv)} grams of CO2e</strong>
 									{:else if input[0].answerChoice=="Train" }
@@ -213,7 +213,7 @@
 							<p>Some people may offset commuting calories with increased exercise while working from home. Therefore working from home may not represent a reduction in dietary emissions.</p>
 						{/if}
 						{#if input[2].answerChoice=="Electric Vehicle"}
-							<p>Although electric vehicles do not directly emit any greenhouse gas, the electricity they run on has an associated carbon cost.</p>
+							<p>Although electric vehicles do not directly emit any greenhouse gases, the electricity they run on has an associated carbon cost.</p>
 						{/if}
 						<br>
 						<p><strong>How far is your daily round commute?</strong></p>
@@ -669,6 +669,7 @@
   button:active {
     outline: none;
     background-color: #a3a3a3 !important;
+	box-shadow: 0 0 0 3pt #fbdd02 !important;
   }
   #accord:hover {
     outline: none;
