@@ -959,7 +959,7 @@ svg { transition: transform 0.2s ease-in;
   .wrapper {
 	  width: 100%;
 	  margin: 0 0;
-	  padding: 0 16px;
+	  padding: 0;
 	  font-family: "Open Sans",Helvetica,Arial,sans-serif !important;
   }
   @media (min-width: 768px) {
