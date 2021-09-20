@@ -5,12 +5,12 @@
             {"id": "5a", "text": "Walk", "selected": ""},
             {"id": "5a", "text": "Cycle", "selected": ""},
             {"id": "5b", "text": "Bus", "selected": ""},
-            {"id": "5b", "text": "Train", "selected": "selected"},
+            {"id": "5b", "text": "Train", "selected": ""},
             {"id": "5b", "text": "London Underground", "selected": ""},
             {"id": "5c", "text": "Motorbike", "selected": ""},
-            {"id": "5d", "text": "Car", "selected": ""}
+            {"id": "5d", "text": "Car", "selected": "selected"}
         ],
-        "answerChoice": "Train"
+        "answerChoice": "Car"
     },
     {
         "question": "What kind of car do you drive?",

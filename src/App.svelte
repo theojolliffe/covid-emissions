@@ -208,6 +208,12 @@
 						{/if}
 
 						{#if !((input[0].answerChoice=="Walk")|(input[0].answerChoice=="Cycle"))}
+
+							{#if !((input[0].answerChoice=="Car")|(input[0].answerChoice=="Motorbike"))}
+							<p>
+								Less use of public public transport may not impact total UK emissions unless services are adapted to account for the fall in demand.
+							</p>
+							{/if}
 							<p>These figures are calculated using the <a href="https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2021" target=”_blank”>Department for Business, Energy and Industrial Strategy's conversion factors</a>.</p>
 						{:else}
 							<p>Some people may offset commuting calories with increased exercise while working from home. Therefore working from home may not represent a reduction in dietary emissions.</p>
