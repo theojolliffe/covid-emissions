@@ -134,24 +134,6 @@
 								{/if}
 							</form>
 						</div>
-						{#if (input[0].answerChoice=="Car")|(input[0].answerChoice=="Motorbike")}
-							<button id="accord" on:click={toggle} aria-expanded={isOpen}><svg style="tran"  width="20" height="20" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg> {"Vehicle not listed? Manually enter your fuel consumption rate"}</button>
-							{#if isOpen}
-							<div transition:slide={{ duration: 300 }}>
-								<div style="background-color: #EAEAEA; padding: 16px 16px; margin-bottom: 36px; padding: 20px;"><p>If your vehicle type isn't listed you can manually enter your vehicle's fuel consumption rate.</p><button id="cavButb" on:click={addMethod}>Enter your vehicle's fuel consumption rate</button>
-									{#if commMethod}
-										<div class="input-group">
-											<label class="visuallyhidden" for="fuelInput">Enter your vehicle's fuel consumption rate</label>
-											<input class="typedInput" id="fuelInput" bind:value={manualVeh} placeholder="Grams of CO2e per mile">
-											<button id="cavButc" on:click={searchManVeh(manualVeh)}>
-												Enter
-											</button>
-										</div>
-									{/if}
-								</div>
-							</div>
-							{/if}
-						{/if}
 						<br>
 						<br>
 						<div class="grid-cont">
@@ -285,7 +267,7 @@
 										{@html CO2ePic}
 									</div>
 									<p class="pbox">
-										By avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a year with 46 working weeks, you will save <strong class="strongblue">{Math.round(yearSaving*10)/10} kg CO2 equivalent</strong>
+										By avoiding your commute <strong>{numLU[wfhDays]} day{plural(wfhDays)} per week</strong>, across a year with 46 working weeks, you will save <strong class="strongblue">{Math.round(yearSaving).toLocaleString()} kg CO2 equivalent</strong>
 									</p>
 								{/if}
 							</div>
@@ -314,7 +296,7 @@
 								</div>
 								<div>
 									<p style="margin-bottom:0px !important">
-										<strong>{Math.round(yearSaving*10)/10} kg CO2 equivalent</strong> can produce about <strong>{Math.round((totCommEm/0.21233)*10)/10} KWh</strong> of electricity in the UK, enough to power 60 Watt TV for<strong class="strongorange">{Math.round(((totCommEm/0.21233)/0.06)/168)} weeks</strong>
+										<strong>{Math.round(yearSaving).toLocaleString()} kg CO2 equivalent</strong> is emitted from the production of about <strong>{Math.round(totCommEm/0.21233).toLocaleString()} KWh</strong> of electricity in the UK. That's enough to power a 60 Watt TV for<strong class="strongorange">{Math.round(((totCommEm/0.21233)/0.06)/168)} full weeks</strong>
 									</p>
 								</div>
 							</div>
@@ -336,33 +318,24 @@
 								<input id="costOfHeat" class="typedInput" bind:value={manualHeat} placeholder="Average annual cost of heating (GBP)">
 								<button id="cavBut" on:click={searchManHeat(manualHeat)}>Enter</button>
 							</div>
-							<label>
-							<p style="float:left; margin: 0px 50px 0px 0px;">How is your heat generated?</p>
-							<select class="addressSelect" id="select1b" bind:value={input[4].answerChoice} on:change={heatType}>
-								{#each input[4].answers as question}
-									<option selected={question.selected} value={question.text}>
-										{homeFuelConv[question.text][0]}
-									</option>
-								{/each}
-							</select>
-							</label>
+							{#if manualHeatEnt>0}
 
-							<br>
-							<br>
-
-							{#if addressSelected}
-								<div class="grey-box">
-									<div class="icon" style="width:100px; margin-right: 10px;">
-										{@html WFHPic}
-									</div>
-									<div>
-										<p style="margin-bottom:0px !important">
-											This <strong>{selectAd['total-floor-area']} m<sup>2</sup></strong> {selectAd['property-type'].toLowerCase()} has <strong>{numLU[selectAd['number-heated-rooms']]} heated rooms</strong> and is <strong>heated using {homeFuelConv[selFuel][0].toLowerCase()}</strong>, according to <a href="https://epc.opendatacommunities.org/" target=”_blank”>Energy Performance of Buildings data</a>
-										</p>
-									</div>
-								</div>
-								<br>
+								<label>
+								<p style="float:left; margin: 0px 50px 0px 0px;">How is your heat generated?</p>
+								<select class="addressSelect" id="select1b" bind:value={input[4].answerChoice} on:change={heatType}>
+									{#each input[4].answers as question}
+										<option selected={question.selected} value={question.text}>
+											{homeFuelConv[question.text][0]}
+										</option>
+									{/each}
+								</select>
+								</label>
+							
 							{/if}
+
+							<br>
+							<br>
+
 						{#if addressSelected | (manualHeatEnt>0)}
 							<div class="grid-cont" style="grid-template-columns: 39% 59% !important;">
 								<div class="grid-box" aria-live="assertive">
@@ -390,7 +363,7 @@
 								</div>
 								<div>
 									<p style="margin-bottom:0px !important">
-										The average UK home emits about 2,806 kg CO2 equivalent on heating each year. <strong>For each hour</strong> the heating is switched on, this is approximately <strong class="strongblue">1072 grams of CO2 equivalent</strong> 
+										The average UK home emits about 2,806 kg CO2 equivalent on heating each year. <strong>For each hour</strong> the heating is switched on, this is approximately <strong class="strongblue">1,072 grams of CO2 equivalent</strong> 
 									</p>
 								</div>
 							</div>
@@ -399,24 +372,25 @@
 					</div>
 					<br>
 
-					<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you work from home with, on average?</p>
-					<div class="blockFlex">
-						<div class="input-group">
-							<label class="visuallyhidden" for="shareInputb">Enter the number of people you share your home with during the day</label>
-							<input style="width: 65px;" id="shareInputb" type=number step="0.5" min=0 max=12 bind:value={share2}>
-						</div>
-					</div>
-
 					<p><strong>How many extra hours will you heat your house while working from home?</strong></p>
 					<div id="slide-cont2">
 						<RangeSlider bind:values={hoursHeated} min=0 max={24} float suffix=" hours per day" step={0.5} springValues={{ stiffness: 0.3, damping: 0.9 }}/>
 					</div>
 
-					{#if addressSelected | (manualHeatEnt>0)}
+
+
+					{#if manualHeatEnt>0}
 
 						<p>
 							Heating your home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*heatCost*homeFuelConv[selFuel][1])/2618)*10)/10} kg CO2 equivalent per home working day</strong> during the heating season.
 						</p>
+						<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you work from home with, on average?</p>
+						<div class="blockFlex">
+							<div class="input-group">
+								<label class="visuallyhidden" for="shareInputb">Enter the number of people you share your home with during the day</label>
+								<input style="width: 65px;" id="shareInputb" type=number step="0.5" min=0 max=12 bind:value={share2}>
+							</div>
+						</div>
 						<br>
 						<br>
 
@@ -445,14 +419,13 @@
 
 								<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
 									<div>
-										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
+										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of an average person in the UK</p>
 									</div>
 									<div style="width:100px; margin-right: 10px;">
 										{@html CO2ePic}
 									</div>
 								</div>
 								<br>
-
 
 						<div aria-live="assertive">
 							<div class = "green">
@@ -474,6 +447,13 @@
 						<p>
 							Heating the average home for an additional <strong>{hoursHeated} hour{plural(hoursHeated)}</strong> will emit an extra <strong>{Math.round(((hoursHeated*1072)/1000)*10)/10} kg CO2 equivalent per home working day</strong> during the heating season.
 						</p>
+						<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you work from home with, on average?</p>
+						<div class="blockFlex">
+							<div class="input-group">
+								<label class="visuallyhidden" for="shareInputb">Enter the number of people you share your home with during the day</label>
+								<input style="width: 65px;" id="shareInputb" type=number step="0.5" min=0 max=12 bind:value={share2}>
+							</div>
+						</div>
 						<br>
 
 						<div class="grid-cont">
@@ -499,7 +479,7 @@
 
 								<div class="grey-box" style="display: grid !important;grid-template-columns: auto auto;gap: 2%;padding: 20px;">
 									<div>
-										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of the average person in the UK</p>
+										<p style="margin-bottom: 0px !important;margin-top: 10px;margin-left: 15px;">This makes up about <strong style="color: #206095; font-size: xx-large;padding: 3px;">{Math.round((Math.abs((((34*wfhDays*hoursHeated*1072)/1000)/(share2+1))-totCommEm)/12700)*100*10)/10}%</strong> of the total emissions of an average person in the UK</p>
 									</div>
 									<div style="width:100px; margin-right: 10px;">
 										{@html CO2ePic}
