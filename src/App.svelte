@@ -31,14 +31,8 @@
 	let comLU = {Walk: 1.8, Cycle: 6.8, Bus: 12.7, Train: 47, 'London Underground': 18.6, Motorbike: 18, Car: 20.9}
 	let dietLU = {"High meat eater": 7.26, "Medium meat eater": 5.66, "Low meat eater": 4.67, "Pescatarian": 3.94, "Vegetarian": 3.85, "Vegan": 2.94}
 	let comLength = [comLU[input[0].answerChoice]];
-	$:km = 1.60934*comLength;
+	let kmConv =1.60934;
 	let numLU = {0: 'zero', 0.5: '0.5', 1: 'one', 1.5: 'one and a half', 2: 'two', 2.5: 'two and a half', 3: 'three', 3.5: 'three and a half', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8:'eight', 9: 'nine', 10:10, 11:11,12:12,13:13}
-
-	$:vehcLU = vehicleLU["Car"][input[1].answerChoice][input[2].answerChoice];
-	$:vehConsump = (input[0].answerChoice=="Car")? vehcLU : vehicleLU[input[0].answerChoice];
-	$:walkEm = dietLU[input[3].answerChoice]*(46*wfhDays*km*47)/2000
-	$:cycleEm = dietLU[input[3].answerChoice]*(46*wfhDays*km*28)/2000
-	$:totCommEm = (input[0].answerChoice=="Walk")? walkEm:(input[0].answerChoice=="Cycle")? cycleEm: Math.round(yearSaving*10)/10;
 
 	function plural(share) { return share==1?"":"s";}
 	function addMethod() { commMethod = !commMethod }
@@ -79,9 +73,16 @@
 		}
 		wfhDays = v;
 	}
-	$: calorieComm = km*((input[0].answerChoice=="Walk")?47:input[0].answerChoice=="Cycle"?28:null)
+
+	$:vehcLU = vehicleLU["Car"][input[1].answerChoice][input[2].answerChoice];
+	$:vehConsump = (input[0].answerChoice=="Car")? vehcLU*kmConv : vehicleLU[input[0].answerChoice]*kmConv;
+	$: calorieComm = comLength*((input[0].answerChoice=="Walk")?87.5:input[0].answerChoice=="Cycle"?44.3:null)
 	$: caloriesYear = Math.round(46*wfhDays*calorieComm)
+	$:walkEm = dietLU[input[3].answerChoice]*(46*wfhDays*comLength*87.5)/2000
+	$:cycleEm = dietLU[input[3].answerChoice]*(46*wfhDays*comLength*44.3)/2000
 	$: yearSaving = (input[0].answerChoice=="Walk"|input[0].answerChoice=="Cycle")?(caloriesYear*dietLU[input[3].answerChoice]/2000):(46*wfhDays*(vehConsump*comLength))/(share+1);
+	$:totCommEm = (input[0].answerChoice=="Walk")? walkEm:(input[0].answerChoice=="Cycle")? cycleEm: Math.round(yearSaving*10)/10;
+
 
 </script>
 <main>
@@ -164,16 +165,16 @@
 									{:else if input[0].answerChoice=="Cycle"}
 										Cycling to work emits no greenhouse gas, although bike manufacturing produces some greenhouse gas, as does producing the food needed for energy to cycle.
 									{:else if input[0].answerChoice=="Bus"}
-										For each passenger per mile, a bus emits about <strong class="strongblue">164 grams of CO2e</strong>
+										For each passenger per mile, a bus emits about <strong class="strongblue">{Math.round(102*kmConv)} grams of CO2e</strong>
 									{:else if input[0].answerChoice=="Train" }
-										For each passenger per mile, a train emits about <strong class="strongblue">57 grams of CO2e</strong>
+										For each passenger per mile, a train emits about <strong class="strongblue">{Math.round(35*kmConv)} grams of CO2e</strong>
 									{:else if input[0].answerChoice=="London Underground" }
-										For each passenger per mile, the tube emits about <strong class="strongblue">45 grams of CO2e</strong>
+										For each passenger per mile, the tube emits about <strong class="strongblue">{Math.round(28*kmConv)} grams of CO2e</strong>
 									{:else if input[0].answerChoice=="Motorbike" }
-										For each miles, a motorbike to work emits about <strong class="strongblue">182 grams of CO2e</strong>
+										For each miles, a motorbike to work emits about <strong class="strongblue">{Math.round(116*kmConv)} grams of CO2e</strong>
 									{:else if input[0].answerChoice=="Car"}
 										Per mile, this vehicle emits approximately
-										<strong class="strongblue">{Math.round(vehcLU*1000)} grams of CO2e</strong>
+										<strong class="strongblue">{Math.round(vehcLU*1000*kmConv)} grams of CO2e</strong>
 									{/if}
 								</p>
 							</div>
@@ -260,7 +261,7 @@
 												sharing your journey with {numLU[share]} other{plural(share)}, individually
 											{/if}
 										{/if}
-										you emit approximately <strong class="strongblue">{Math.round((vehConsump*km)/(share+1)*10)/10} kg CO2e</strong>
+										you emit approximately <strong class="strongblue">{Math.round((vehConsump*comLength)/(share+1)*10)/10} kg CO2e</strong>
 									{/if}
 								</p>
 							</div>
@@ -307,7 +308,7 @@
 								</div>
 								<div>
 									<p style="margin-bottom:0px !important">
-										<strong>{Math.round(yearSaving*10)/10} kg CO2e</strong> can produce about <strong>{Math.round((totCommEm/0.23314)*10)/10} KWh</strong> of electricity in the UK, enough to power 60 Watt TV for<strong class="strongorange">{Math.round(((totCommEm/0.23314)/0.06)/168)} weeks</strong>
+										<strong>{Math.round(yearSaving*10)/10} kg CO2e</strong> can produce about <strong>{Math.round((totCommEm/0.21233)*10)/10} KWh</strong> of electricity in the UK, enough to power 60 Watt TV for<strong class="strongorange">{Math.round(((totCommEm/0.21233)/0.06)/168)} weeks</strong>
 									</p>
 								</div>
 							</div>
@@ -392,7 +393,7 @@
 					</div>
 					<br>
 
-					<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you ussually work from home with?</p>
+					<p style="float:left; margin: 0px 50px 0px 0px;">How many others do you work from home with, on average?</p>
 					<div class="blockFlex">
 						<div class="input-group">
 							<label class="visuallyhidden" for="shareInputb">Enter the number of people you share your home with during the day</label>
